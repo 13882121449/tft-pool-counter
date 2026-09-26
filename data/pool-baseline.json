@@ -21,7 +21,7 @@
     "confidence": {
       "set_identity": "high",
       "pool_size_by_cost": "high (3 independent Set-18 sources agree)",
-      "champion_roster_en": "medium-high (3 sources agree: 14/13/14/14/10 = 65)",
+      "champion_roster_en": "high (5+ sources agree: 14/13/14/14/10 = 65)",
       "champion_traits": "medium-high",
       "champion_name_cn": "medium (TFT 专属野怪弈子中文名待核实，见 unverified 字段)",
       "shop_odds_by_level": "medium-high"
@@ -29,7 +29,6 @@
     "CONFIRMED_false_reasons": [
       "数据来自社区/wiki 第三方站点，非 Riot 官方数据文件或官方 API",
       "存在冲突来源：tftactics.gg/db/rolling 与部分 tft.ninja 旧页面仍写 22/20/17/10/9（历史旧值），本文件采用 30/25/18/10/9",
-      "2 费档弈子种类数存在分歧：多数来源 13，tft-lab.com 记 14（总量 65 vs 66）",
       "TFT 专属野怪弈子（Cinderling / Pebbles / Mama Beak / Sentinel / Brambleback）的国服官方中文名未确认",
       "赛季中途补丁（18.2 及后续）可能调整卡池数量或弈子名单，需按 patch 复核"
     ],
@@ -42,7 +41,7 @@
 
   "pool_size_by_cost": {
     "1": { "copies_per_champion": 30, "distinct_champions": 14, "tier_total": 420, "CONFIRMED": false, "confidence": "high" },
-    "2": { "copies_per_champion": 25, "distinct_champions": 13, "tier_total": 325, "CONFIRMED": false, "confidence": "high", "note": "distinct_champions 有分歧：tft-lab.com 记为 14（tier_total 350）" },
+    "2": { "copies_per_champion": 25, "distinct_champions": 13, "tier_total": 325, "CONFIRMED": false, "confidence": "high", "note": "已核实（2026-09-26）：多来源确认 distinct_champions=13，tft-lab.com 的 14 为孤立错误，tier_total 325 正确" },
     "3": { "copies_per_champion": 18, "distinct_champions": 14, "tier_total": 252, "CONFIRMED": false, "confidence": "high" },
     "4": { "copies_per_champion": 10, "distinct_champions": 14, "tier_total": 140, "CONFIRMED": false, "confidence": "high" },
     "5": { "copies_per_champion": 9, "distinct_champions": 10, "tier_total": 90, "CONFIRMED": false, "confidence": "high" }
@@ -202,7 +201,7 @@
   "sources": [
     { "name": "EsportsTales — TFT Set 18 champion pool size, roll odds, and draw chances", "url": "https://esportstales.com/teamfight-tactics/champion-pool-size-and-draw-chances", "used_for": "pool_size_by_cost (30/25/18/10/9)、shop_odds_by_level、carousel 从池中抽取", "credibility": "high" },
     { "name": "TFT Ninja — Champion Pool Math (Set 18)", "url": "https://tft.ninja/guides/advanced/pool-math", "used_for": "pool_size_by_cost、distinct champions 14/13/14/14/10=65、tier totals", "credibility": "high" },
-    { "name": "TFT Lab（繁中）— 商店與刷新 (SET 18 · 18.1)", "url": "https://tft-lab.com/tw/handbook/shop", "used_for": "pool_size_by_cost 交叉验证、shop_odds", "credibility": "medium-high", "note": "2 费档种类数记为 14（与主流 13 冲突）" },
+    { "name": "TFT Lab（繁中）— 商店與刷新 (SET 18 · 18.1)", "url": "https://tft-lab.com/tw/handbook/shop", "used_for": "pool_size_by_cost 交叉验证、shop_odds", "credibility": "medium-high", "note": "2 费档种类数误记为 14，已核实主流为 13（此来源该值不可采信）" },
     { "name": "RiftDaily — TFT Set 18 Enchanted Wilds release date and key facts", "url": "https://riftdaily.com/tft-set-18-enchanted-wilds/", "used_for": "65 弈子完整名单 + 费用 + 羁绊", "credibility": "medium-high" },
     { "name": "Out of Games — All Champions in TFT Enchanted Wilds (Set 18)", "url": "https://outof.games/realms/tft/guides/575-all-champions-in-teamfight-tactics-enchanted-wilds-set-18/", "used_for": "弈子名单与技能交叉验证", "credibility": "medium-high" },
     { "name": "Total Apex Entertainment — TFT Set 18 Enchanted Wilds Info", "url": "https://totalapexentertainment.com/gaming/teamfight-tactics-set-18/", "used_for": "弈子名单交叉验证、上线日期", "credibility": "medium" },
