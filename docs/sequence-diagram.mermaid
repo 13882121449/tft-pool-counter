@@ -1,0 +1,139 @@
+%% TFT 牌库剩余计数器 —— 关键流程时序图
+%% 包含：① 启动与合规门禁 ② 一次扫描识别流程 ③ 手动校正流程 ④ 阶段切换与暂停恢复
+
+sequenceDiagram
+    autonumber
+    participant U as 用户
+    participant M as Main Process
+    participant CFG as ConfigStore
+    participant BSL as BaselineLoader
+    participant R as HUD Renderer
+    participant W as Vision Worker (utilityProcess)
+    participant CAP as CaptureManager
+    participant DET as Detect+Match
+    participant LR as LedgerRuntime
+    participant ENG as PoolEngine (Core)
+
+    %% ================= ① 启动与合规门禁 =================
+    rect rgb(232, 242, 254)
+    Note over U,W: ① 应用启动与合规门禁
+    U->>M: 启动应用
+    M->>M: app.whenReady / 单实例锁
+    M->>CFG: load() + migrate()
+    CFG-->>M: AppConfig
+    alt compliance.acknowledged == false
+        M->>R: 打开引导页（强制，不可跳过）
+        R->>U: 合规声明（只读像素 / 不注入 / 不模拟输入 / 不上传）
+        U->>R: 勾选确认
+        R->>M: config:set {compliance.acknowledged:true}
+        R->>U: 分辨率 + DPI 自检
+        U->>R: 拖拽标定 棋盘 / 备战席 / 商店 矩形
+        R->>M: calibration:save（归一化 0..1 比例）
+    end
+    M->>BSL: loadBaseline(data/pool-baseline.json)
+    BSL-->>M: PoolBaseline + warnings[]
+    alt baseline.setNumber != 18
+        M->>R: 提示「当前模式卡池基线未配置」(RQ-20)
+    end
+    M->>W: utilityProcess.fork(vision-worker)
+    W-->>M: ready {backend, wgcSupport, osVersion}
+    M->>R: 打开 HUD（transparent / 置顶 / 恢复上次位置）
+    R-->>U: 65 行全部=池总数，巡查 0/8
+    end
+
+    %% ================= ② 一次扫描识别流程 =================
+    rect rgb(237, 247, 237)
+    Note over M,R: ② 一次扫描识别流程（定时，准备阶段 1.5s）
+    M->>W: postMessage({type:'scan', scanId, calibration})
+    W->>W: profiler.start()
+    W->>CAP: capture()
+    alt node-screenshots 可用（WGC）
+        CAP-->>W: RawImage(BGRA) ≈50ms
+    else 失败 / 连续黑帧
+        CAP->>CAP: fallback → Electron desktopCapturer
+        CAP-->>W: RawImage ≈300ms (metrics.backend 记录降级)
+    end
+    W->>DET: detectBoard(raw)
+    alt 未检测到棋盘（游戏不在前台 / 切出 / 选秀）
+        DET-->>W: null
+        W-->>M: ScanResult{stage:'unknown', errors:[VIS_NO_BOARD]}
+        M->>M: 退避到 probeIntervalMs（5s），CPU ≈ 0
+        M->>R: 状态条 灰/黄
+    else 检测到棋盘
+        DET->>DET: detectStage(raw) → prep | combat | carousel
+        DET->>DET: 标定矩形 → 网格 → 切 36 格 → 64×64 归一化 + pHash
+        DET->>DET: costClassifier：费用颜色先验（65 类 → ≤14 类）
+        DET->>DET: phashMatcher 粗筛 Top-5
+        DET->>DET: openCvMatcher(TM_CCOEFF_NORMED) 精排 → best + score
+        DET->>DET: starDetector（不确定时保守默认 1★）
+        DET->>DET: blacklistFilter（非池单位丢弃，E5）
+        DET->>DET: playerDetector：计分板高亮 → 棋盘指纹 → unknown
+        DET-->>W: ObservationRecord[36] + SeatGuess + Stage
+        W-->>M: ScanResult{observations, seatGuess, stage, metrics}
+    end
+
+    M->>LR: applyScan(ScanResult)
+    LR->>LR: DedupMerger.merge()
+    Note over LR: 去重与合并规则<br/>① 同 slotKey + 指纹相近 → 仅更新 lastSeenAt（幂等，核心去重）<br/>② 指纹差异大 → 替换（升星 / 换牌）<br/>③ 空槽且超 STALE_TTL(8s) → 移除（卖出 / 淘汰回池）<br/>④ 同帧相邻同 id+star → 合并为 1 实例（远古巨龙只算 1 张）<br/>⑤ locked 槽位 → 只写 autoSuggest，不改用户值<br/>⑥ seat 未知 → 写入 UNKNOWN(8) 暂存区，不猜
+    LR->>ENG: computeRemaining(ledgers, baseline, estimateCfg)
+    ENG->>ENG: 实例聚合 → bySeat 张数矩阵
+    ENG->>ENG: 规则插件链：非池过滤 / 双格 / 复制器超额 / 淘汰回池 / 拉克丝共享池
+    ENG->>ENG: coverage + 乐观/悲观区间 + 置信度 + flags
+    ENG-->>LR: RemainingResult[65]
+    LR->>LR: diff 上次快照 → prevRemaining（UI 显示 ↑N / ↓N）
+    LR->>R: IPC push 'pool:snapshot'（节流 100ms）
+    R->>R: zustand ingest → React.memo 行级重渲染
+    R-->>U: 「扫描中 · 1.2s · 巡查 6/8」+ 列表更新
+    end
+
+    %% ================= ③ 手动校正流程 =================
+    rect rgb(255, 249, 230)
+    Note over U,R: ③ 手动校正流程（识别不准时，≤2 次点击）
+    U->>R: 单击弈子行（或点低置信「?」标记）
+    R->>M: correction:open {championId}
+    M-->>R: CorrectionPayload{bySeat, candidates, observed, remaining, locked}
+    R-->>U: 弹出校正面板
+    alt 调整某家持有数
+        U->>R: 第3家 [+1] / [−1]
+        R->>M: correction:apply {championId, seat:3, delta:+1}
+    else 直接设为指定值
+        U->>R: 设为 __
+        R->>M: correction:apply {championId, seat, value:N}
+    else 归属调整（UNKNOWN 暂存区搬移）
+        U->>R: 归属选 ③
+        R->>M: correction:move {instanceId, from:8, to:3}
+    end
+    M->>LR: applyCorrection(cmd)
+    LR->>LR: 生成 / 替换 UnitInstance（source='manual'）
+    opt 勾选「锁定此值」
+        LR->>LR: instance.locked = true → 自动扫描不再写入
+    end
+    LR->>LR: HistoryStack.push(cmd)（Ctrl+Z 可撤销）
+    LR->>ENG: computeRemaining(...)
+    ENG-->>LR: RemainingResult[]
+    LR->>R: pool:snapshot（flags: LOCKED / MANUAL_OVERRIDE）
+    R-->>U: 行显示 🔒，剩余数更新
+    opt 模板自进化（P2）
+        R->>M: template:appendFromCrop {championId, crop}
+        M->>W: 追加为该弈子的新模板（覆盖多皮肤 / 多姿态）
+    end
+    end
+
+    %% ================= ④ 阶段切换与暂停恢复 =================
+    rect rgb(245, 240, 250)
+    Note over M,R: ④ 阶段切换与暂停 / 恢复（RQ-10）
+    loop 每 intervalMs
+        M->>W: scan
+        W-->>M: ScanResult{stage}
+        alt stage = prep（准备阶段）
+            M->>M: interval = 1500ms
+        else stage = combat（战斗阶段）
+            M->>M: interval = 5000ms（可配 0 = 暂停）
+        else stage = carousel（选秀，画面无棋盘）
+            M->>M: 暂停扫描，标记 STALE
+        else 未检测到棋盘（游戏切出 / 锁屏）
+            M->>M: interval = probeIntervalMs(5000)，CPU ≈ 0
+        end
+        M->>R: 状态条：绿(扫描中) / 灰(暂停) / 黄(阶段未知) / 红(连续3次失败)
+    end
+    end

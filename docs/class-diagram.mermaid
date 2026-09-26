@@ -1,0 +1,505 @@
+classDiagram
+    %% ============ 共享类型 (src/shared/types) ============
+    class Champion {
+        +string id
+        +string nameEn
+        +string nameCn
+        +Cost cost
+        +string[] traits
+        +string[] traitsCn
+        +number poolTotal
+        +ChampionSpecial special
+        +boolean confirmed
+    }
+
+    class ChampionSpecial {
+        +number teamSlots
+        +number poolCopiesConsumed
+        +string sharedPoolNote
+    }
+
+    class PoolBaseline {
+        +BaselineMeta meta
+        +Record poolSizeByCost
+        +Record starCopyCost
+        +Champion[] champions
+        +string[] nonPoolUnitIds
+    }
+
+    class UnitInstance {
+        +string instanceId
+        +string championId
+        +Star star
+        +number copies
+        +number seat
+        +Zone zone
+        +number slotIndex
+        +number slotSpan
+        +number confidence
+        +string fingerprint
+        +number firstSeenAt
+        +number lastSeenAt
+        +Source source
+        +boolean locked
+        +number autoSuggest
+    }
+
+    class PlayerLedger {
+        +number seat
+        +boolean isSelf
+        +LedgerStatus status
+        +Record slots
+        +string boardFingerprint
+        +number lastScanAt
+        +number scanCount
+    }
+
+    class RemainingResult {
+        +string championId
+        +Cost cost
+        +number poolTotal
+        +number observedCopies
+        +number remaining
+        +number overflow
+        +number remainingOptimistic
+        +number remainingPessimistic
+        +number[] bySeat
+        +boolean[] seatHasAny
+        +number[] coveredSeats
+        +number confidence
+        +PoolFlag[] flags
+        +boolean locked
+        +number prevRemaining
+    }
+
+    class PoolSnapshot {
+        +string scanId
+        +number generatedAt
+        +Stage stage
+        +Coverage coverage
+        +RemainingResult[] rows
+        +SnapshotMeta meta
+        +AppError[] errors
+    }
+
+    %% ============ 扫描契约 ============
+    class ObservationRecord {
+        +Zone zone
+        +number slotIndex
+        +string championId
+        +Star star
+        +number confidence
+        +string fingerprint
+        +Cost costGuess
+        +Candidate[] candidates
+        +boolean isBlacklisted
+    }
+
+    class ScanResult {
+        +string scanId
+        +number startedAt
+        +number finishedAt
+        +number durationMs
+        +Stage stage
+        +SeatGuess seatGuess
+        +ObservationRecord[] observations
+        +ShopSlot[] shop
+        +ScanMetrics metrics
+        +AppError[] errors
+    }
+
+    class SeatGuess {
+        +number seat
+        +number confidence
+        +DetectMethod method
+    }
+
+    class Calibration {
+        +CalibrationRect board
+        +number boardCols
+        +number boardRows
+        +CalibrationRect bench
+        +number benchSlots
+        +CalibrationRect shop
+        +number shopSlots
+        +number screenW
+        +number screenH
+        +number scaleFactor
+    }
+
+    class AppConfig {
+        +number version
+        +WindowConfig window
+        +ScanConfig scan
+        +RecognitionConfig recognition
+        +EstimateConfig estimate
+        +UiConfig ui
+        +DataConfig data
+        +HotkeyConfig hotkeys
+        +ComplianceConfig compliance
+    }
+
+    class AppError {
+        +ErrorCode code
+        +string message
+        +unknown detail
+        +number at
+        +boolean fatal
+    }
+
+    %% ============ Core: 引擎 ============
+    class PoolEngine {
+        <<service>>
+        +computeRemaining(PlayerLedger[] ledgers, PoolBaseline baseline, EstimateConfig cfg) RemainingResult[]
+        -aggregateInstances(PlayerLedger[]) Map
+        -applyRules(RuleContext) void
+        -buildRows(Map, PoolBaseline, Coverage) RemainingResult[]
+    }
+
+    class StarCopies {
+        <<utility>>
+        +copiesOf(Star star, PoolBaseline baseline) number
+    }
+
+    class CoverageCalc {
+        <<utility>>
+        +compute(PlayerLedger[]) Coverage
+        +pessimistic(number remaining, Coverage c, EstimateConfig cfg, Cost cost) number
+    }
+
+    class ConfidenceCalc {
+        <<utility>>
+        +ofChampion(UnitInstance[] instances, Coverage c) number
+    }
+
+    class FlagResolver {
+        <<utility>>
+        +resolve(RemainingResult r, Coverage c, PoolBaseline b) PoolFlag[]
+    }
+
+    class DedupMerger {
+        <<service>>
+        +merge(PlayerLedger ledger, ObservationRecord[] obs, number now, DedupConfig cfg) MergeOutcome
+        -sameFingerprint(string a, string b, number threshold) boolean
+        -mergeAdjacentSlots(ObservationRecord[] obs, Champion c) ObservationRecord[]
+        -sweepStale(PlayerLedger ledger, number now, number ttlMs) string[]
+    }
+
+    class PoolRulePlugin {
+        <<interface>>
+        +string id
+        +number order
+        +apply(RuleContext ctx) void
+    }
+
+    class RuleRegistry {
+        <<service>>
+        +register(PoolRulePlugin p) void
+        +runAll(RuleContext ctx) void
+    }
+
+    class NonPoolFilterRule
+    class DoubleSlotRule
+    class DuplicatorOverflowRule
+    class EliminationRule
+    class LuxAvatarRule
+
+    %% ============ Core: 台账 ============
+    class LedgerStore {
+        <<service>>
+        +create() LedgerState
+        +applyScan(LedgerState st, ScanResult r, PoolBaseline b, DedupConfig cfg) LedgerState
+        +applyCorrection(LedgerState st, CorrectionCmd cmd) LedgerState
+        +clearSeat(LedgerState st, number seat) LedgerState
+        +markEliminated(LedgerState st, number seat) LedgerState
+        +reset(LedgerState st) LedgerState
+    }
+
+    class PlayerIdentity {
+        <<service>>
+        +resolve(SeatGuess guess, PlayerLedger[] ledgers) number
+        +moveFromUnknown(LedgerState st, string instanceId, number toSeat) LedgerState
+    }
+
+    class HistoryStack {
+        <<service>>
+        +push(CorrectionCmd cmd) void
+        +undo() CorrectionCmd
+        +canUndo() boolean
+    }
+
+    class LedgerSelectors {
+        <<utility>>
+        +selectRows(LedgerState st) RemainingResult[]
+        +selectWatchlist(LedgerState st, string[] ids) RemainingResult[]
+        +selectSeatDetail(LedgerState st, number seat) UnitInstance[]
+    }
+
+    class BaselineLoader {
+        <<service>>
+        +load(string path) Result~PoolBaseline,AppError~
+        +validate(object raw) Result~PoolBaseline,AppError~
+        +indexOf(PoolBaseline b) Map~string,Champion~
+    }
+
+    %% ============ Vision Worker ============
+    class ScanPipeline {
+        <<service>>
+        +run(ScanRequest req) Promise~ScanResult~
+        -capture() Promise~RawImage~
+        -detectStage(RawImage img) Stage
+        -extractSlots(RawImage img) Slot[]
+        -matchSlots(Slot[] slots) ObservationRecord[]
+        -detectSeat(RawImage img, PlayerLedger[] ledgers) SeatGuess
+    }
+
+    class Capturer {
+        <<interface>>
+        +name() string
+        +isAvailable() Promise~boolean~
+        +capture() Promise~RawImage~
+    }
+
+    class CaptureManager {
+        <<service>>
+        +setBackend(string name) void
+        +capture() Promise~RawImage~
+        -probe() Promise~boolean~
+        -fallback() void
+    }
+
+    class NodeScreenshotsCapturer
+    class DesktopCapturerFallback
+
+    class Geometry {
+        <<utility>>
+        +toPixelRects(Calibration cal, number w, number h) PixelRect[]
+        +slotRects(Calibration cal) SlotRect[]
+    }
+
+    class SlotExtractor {
+        <<service>>
+        +extract(RawImage img, Calibration cal) Slot[]
+    }
+
+    class CostClassifier {
+        <<service>>
+        +classify(Slot s) Cost
+    }
+
+    class StarDetector {
+        <<service>>
+        +detect(Slot s) Star
+    }
+
+    class StageDetector {
+        <<service>>
+        +detect(RawImage img) Stage
+    }
+
+    class BoardDetector {
+        <<service>>
+        +detect(RawImage img) CalibrationRect
+    }
+
+    class PlayerDetector {
+        <<service>>
+        +detect(RawImage img, PlayerLedger[] ledgers) SeatGuess
+        -byScoreboard(RawImage img) SeatGuess
+        -byBoardFingerprint(RawImage img, PlayerLedger[] ledgers) SeatGuess
+    }
+
+    class TemplateStore {
+        <<service>>
+        +load(string dir) Promise~void~
+        +byCost(Cost c) Template[]
+        +append(string championId, RawImage crop) void
+        +manifest() TemplateManifest
+    }
+
+    class PhashMatcher {
+        <<service>>
+        +topN(Slot s, Template[] pool, number n) Candidate[]
+    }
+
+    class OpenCvMatcher {
+        <<service>>
+        +score(Slot s, Template t) number
+    }
+
+    class Fusion {
+        <<service>>
+        +fuse(Candidate[] coarse, number[] fineScores, Cost costGuess) ObservationRecord
+    }
+
+    class BlacklistFilter {
+        <<service>>
+        +isNonPool(ObservationRecord o) boolean
+    }
+
+    class Profiler {
+        <<service>>
+        +mark(string stage) void
+        +report() ScanMetrics
+    }
+
+    %% ============ Main Process ============
+    class VisionHost {
+        <<service>>
+        +start() void
+        +requestScan(ScanRequest req) Promise~ScanResult~
+        +restart() void
+        -onCrash() void
+        -heartbeat() void
+    }
+
+    class ScanScheduler {
+        <<service>>
+        +start() void
+        +stop() void
+        +setStage(Stage s) void
+        +triggerManual() void
+        -tick() Promise~void~
+        -backoff() void
+    }
+
+    class LedgerRuntime {
+        <<service>>
+        +applyScan(ScanResult r) void
+        +applyCorrection(CorrectionCmd c) void
+        +reset() void
+        +snapshot() PoolSnapshot
+    }
+
+    class SnapshotPusher {
+        <<service>>
+        +push(PoolSnapshot s) void
+        -throttle(number ms) void
+    }
+
+    class ConfigStore {
+        <<service>>
+        +get() AppConfig
+        +set(Partial~AppConfig~ patch) void
+        +migrate(number from, number to) AppConfig
+    }
+
+    class SessionStore {
+        <<service>>
+        +save(PoolSnapshot s) void
+        +listRecent(number n) Session[]
+        +clear() void
+    }
+
+    class HudWindow {
+        <<service>>
+        +create() BrowserWindow
+        +setClickThrough(boolean on) void
+        +setMode(string mode) void
+    }
+
+    class WindowState {
+        <<service>>
+        +persist(BrowserWindow w) void
+        +restore(BrowserWindow w) void
+        +snapToEdge(BrowserWindow w) void
+    }
+
+    %% ============ Renderer ============
+    class PoolStore {
+        <<store>>
+        +PoolSnapshot snapshot
+        +Cost[] costFilter
+        +string[] traitFilter
+        +string[] watchlist
+        +string sortMode
+        +ingest(PoolSnapshot s) void
+        +visibleRows() RemainingResult[]
+    }
+
+    class ChampionRow
+    class CorrectionDialog
+    class CalibrationWizard
+    class ComplianceGate
+    class IpcBridge {
+        <<service>>
+        +subscribe() void
+        +toStore(PoolSnapshot s) void
+    }
+
+    %% ============ 关系 ============
+    Champion "1" --> "0..1" ChampionSpecial : has
+    PoolBaseline "1" *-- "65" Champion : contains
+    PlayerLedger "1" *-- "36" UnitInstance : slots{Record}
+    Champion "1" <.. "n" UnitInstance : references
+    RemainingResult "1" <.. "1" Champion : computed for
+    PoolSnapshot "1" *-- "65" RemainingResult : rows
+    PoolSnapshot "1" *-- "n" AppError : errors
+    ScanResult "1" *-- "n" ObservationRecord : observations
+    ScanResult "1" *-- "1" SeatGuess : seatGuess
+    ObservationRecord "1" *-- "n" Candidate : candidates
+
+    PoolEngine ..> StarCopies : uses
+    PoolEngine ..> CoverageCalc : uses
+    PoolEngine ..> ConfidenceCalc : uses
+    PoolEngine ..> FlagResolver : uses
+    PoolEngine ..> RuleRegistry : runs
+    PoolEngine ..> DedupMerger : uses
+    PoolEngine ..> PoolBaseline : reads
+    PoolEngine ..> PlayerLedger : reads
+    PoolEngine --> RemainingResult : produces
+
+    RuleRegistry o-- PoolRulePlugin : registry
+    PoolRulePlugin <|.. NonPoolFilterRule
+    PoolRulePlugin <|.. DoubleSlotRule
+    PoolRulePlugin <|.. DuplicatorOverflowRule
+    PoolRulePlugin <|.. EliminationRule
+    PoolRulePlugin <|.. LuxAvatarRule
+
+    LedgerStore ..> DedupMerger : uses
+    LedgerStore ..> PlayerIdentity : uses
+    LedgerStore ..> HistoryStack : uses
+    LedgerStore --> PlayerLedger : manages(8)
+    LedgerSelectors ..> PlayerLedger : reads
+    BaselineLoader --> PoolBaseline : produces
+
+    ScanPipeline ..> CaptureManager : uses
+    ScanPipeline ..> SlotExtractor : uses
+    ScanPipeline ..> StarDetector : uses
+    ScanPipeline ..> StageDetector : uses
+    ScanPipeline ..> BoardDetector : uses
+    ScanPipeline ..> PlayerDetector : uses
+    ScanPipeline ..> Fusion : uses
+    ScanPipeline ..> Profiler : uses
+    ScanPipeline --> ScanResult : produces
+    CaptureManager o-- Capturer : strategy
+    Capturer <|.. NodeScreenshotsCapturer
+    Capturer <|.. DesktopCapturerFallback
+    SlotExtractor ..> Geometry : uses
+    SlotExtractor ..> CostClassifier : uses
+    Fusion ..> PhashMatcher : uses
+    Fusion ..> OpenCvMatcher : uses
+    Fusion ..> BlacklistFilter : uses
+    PhashMatcher ..> TemplateStore : reads
+    OpenCvMatcher ..> TemplateStore : reads
+    CostClassifier ..> CostColors : reads
+
+    VisionHost ..> ScanPipeline : forks(utilityProcess)
+    ScanScheduler ..> VisionHost : requests
+    ScanScheduler ..> AppConfig : reads policy
+    VisionHost --> ScanResult : returns
+    LedgerRuntime ..> LedgerStore : applies
+    LedgerRuntime ..> PoolEngine : computes
+    LedgerRuntime --> PoolSnapshot : produces
+    LedgerRuntime ..> SessionStore : persists
+    SnapshotPusher ..> PoolSnapshot : broadcasts
+    ConfigStore ..> AppConfig : owns
+
+    IpcBridge ..> SnapshotPusher : receives
+    IpcBridge --> PoolStore : hydrates
+    PoolStore --> ChampionRow : renders
+    PoolStore --> CorrectionDialog : opens
+    ComplianceGate ..> ConfigStore : sets acknowledged
+    CalibrationWizard ..> ConfigStore : saves calibration
+    HudWindow ..> WindowState : persists
+    WindowState ..> ConfigStore : reads/writes

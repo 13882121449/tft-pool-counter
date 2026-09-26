@@ -1,0 +1,464 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-09-15T05:00:42.004Z",
+  "generator": "scripts/make-templates.mjs",
+  "deterministicSeed": "fb82050a4540",
+  "count": 65,
+  "items": [
+    {
+      "championId": "akali",
+      "cost": 1,
+      "fingerprint": "bc3cd0799a446567",
+      "dHash": "c9c98989899d1d01",
+      "source": "placeholder"
+    },
+    {
+      "championId": "camille",
+      "cost": 1,
+      "fingerprint": "b171ce0e6c8393f1",
+      "dHash": "0121216060e18101",
+      "source": "placeholder"
+    },
+    {
+      "championId": "cinderling",
+      "cost": 1,
+      "fingerprint": "a933b068c48f4f97",
+      "dHash": "61e1818c0c48d801",
+      "source": "placeholder"
+    },
+    {
+      "championId": "karma",
+      "cost": 1,
+      "fingerprint": "e76f4d76d0988681",
+      "dHash": "f8b0b02131312101",
+      "source": "placeholder"
+    },
+    {
+      "championId": "kobuko",
+      "cost": 1,
+      "fingerprint": "ea30b56cdb9a6c30",
+      "dHash": "616162263e181901",
+      "source": "placeholder"
+    },
+    {
+      "championId": "leona",
+      "cost": 1,
+      "fingerprint": "fb6b84865630b596",
+      "dHash": "06c4c4c6c7e16101",
+      "source": "placeholder"
+    },
+    {
+      "championId": "ornn",
+      "cost": 1,
+      "fingerprint": "ac61e31ed3e11e92",
+      "dHash": "1878787803030101",
+      "source": "placeholder"
+    },
+    {
+      "championId": "pebbles",
+      "cost": 1,
+      "fingerprint": "e4269388ccdc9bf1",
+      "dHash": "1838f8d819010101",
+      "source": "placeholder"
+    },
+    {
+      "championId": "rakan",
+      "cost": 1,
+      "fingerprint": "ea34b44ab1b14bcb",
+      "dHash": "f9f9d1f104040401",
+      "source": "placeholder"
+    },
+    {
+      "championId": "reksai",
+      "cost": 1,
+      "fingerprint": "b897872c9fc8e0c3",
+      "dHash": "c1c162c6cce86801",
+      "source": "placeholder"
+    },
+    {
+      "championId": "varus",
+      "cost": 1,
+      "fingerprint": "9cd0e301fc3e1ce3",
+      "dHash": "1b03c3c3c1818101",
+      "source": "placeholder"
+    },
+    {
+      "championId": "veigar",
+      "cost": 1,
+      "fingerprint": "b7e4c43bc91f84c4",
+      "dHash": "3131b18180d2c201",
+      "source": "placeholder"
+    },
+    {
+      "championId": "xayah",
+      "cost": 1,
+      "fingerprint": "b466cf99c33139c1",
+      "dHash": "19196161e1e1c101",
+      "source": "placeholder"
+    },
+    {
+      "championId": "yorick",
+      "cost": 1,
+      "fingerprint": "a69cd96132673699",
+      "dHash": "0181b1b3b3b13101",
+      "source": "placeholder"
+    },
+    {
+      "championId": "alistar",
+      "cost": 2,
+      "fingerprint": "c67a39c592ce9a32",
+      "dHash": "10101212323e1800",
+      "source": "placeholder"
+    },
+    {
+      "championId": "caitlyn",
+      "cost": 2,
+      "fingerprint": "b470cb8ff0343cc3",
+      "dHash": "0002606062000000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "elise",
+      "cost": 2,
+      "fingerprint": "f03c8fc3c13cc1e3",
+      "dHash": "00c0404171700100",
+      "source": "placeholder"
+    },
+    {
+      "championId": "gromp",
+      "cost": 2,
+      "fingerprint": "964b4bb434293cf6",
+      "dHash": "0636160e03030000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "kayle",
+      "cost": 2,
+      "fingerprint": "c4377bc03737c0b4",
+      "dHash": "0000010139181800",
+      "source": "placeholder"
+    },
+    {
+      "championId": "leblanc",
+      "cost": 2,
+      "fingerprint": "e1e1388c8d1e1f1f",
+      "dHash": "3c30303c0c0c0000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "murkwolf",
+      "cost": 2,
+      "fingerprint": "b3ccce33cc25338c",
+      "dHash": "3030317171323000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "scuttlecrab",
+      "cost": 2,
+      "fingerprint": "b131cec46e8ef132",
+      "dHash": "0061616363630300",
+      "source": "placeholder"
+    },
+    {
+      "championId": "sejuani",
+      "cost": 2,
+      "fingerprint": "b1310ac5cfcece31",
+      "dHash": "006060d8f1f1c100",
+      "source": "placeholder"
+    },
+    {
+      "championId": "shen",
+      "cost": 2,
+      "fingerprint": "e33e1cc1e632393c",
+      "dHash": "0000603030343400",
+      "source": "placeholder"
+    },
+    {
+      "championId": "teemo",
+      "cost": 2,
+      "fingerprint": "da78a59166659366",
+      "dHash": "c0c2868686060000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "warwick",
+      "cost": 2,
+      "fingerprint": "b21cccf2e1e1630f",
+      "dHash": "8e83807060606000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "yunara",
+      "cost": 2,
+      "fingerprint": "f0e0cc9f366a8987",
+      "dHash": "6c6c6c6061070100",
+      "source": "placeholder"
+    },
+    {
+      "championId": "azir",
+      "cost": 3,
+      "fingerprint": "b39cc8731ec1c31e",
+      "dHash": "0000188181303000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "cassiopeia",
+      "cost": 3,
+      "fingerprint": "f0b497c9494b8fb0",
+      "dHash": "0179716464600000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "diana",
+      "cost": 3,
+      "fingerprint": "fae2071d906a0f8f",
+      "dHash": "00f0d6f6e6808000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "fiddlesticks",
+      "cost": 3,
+      "fingerprint": "9c99c3c3b4b4646e",
+      "dHash": "0486c1c1c3060000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "hecarim",
+      "cost": 3,
+      "fingerprint": "8f61709a8fcdca64",
+      "dHash": "6060289f97060000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "khazix",
+      "cost": 3,
+      "fingerprint": "91c14fbf7830b266",
+      "dHash": "0c3f336363630300",
+      "source": "placeholder"
+    },
+    {
+      "championId": "kogmaw",
+      "cost": 3,
+      "fingerprint": "8c33f38c2ee0cd1e",
+      "dHash": "0006060c1c1f3b00",
+      "source": "placeholder"
+    },
+    {
+      "championId": "krug",
+      "cost": 3,
+      "fingerprint": "c32cbcc34e1fa169",
+      "dHash": "004c0c9c3c210100",
+      "source": "placeholder"
+    },
+    {
+      "championId": "mamabeak",
+      "cost": 3,
+      "fingerprint": "f1f18f0a2425da9e",
+      "dHash": "0464646066666600",
+      "source": "placeholder"
+    },
+    {
+      "championId": "masteryi",
+      "cost": 3,
+      "fingerprint": "f0980c4ee56173b7",
+      "dHash": "4c66666733060c00",
+      "source": "placeholder"
+    },
+    {
+      "championId": "rammus",
+      "cost": 3,
+      "fingerprint": "c696b1793930c7c9",
+      "dHash": "031b9b9bc8d89800",
+      "source": "placeholder"
+    },
+    {
+      "championId": "rengar",
+      "cost": 3,
+      "fingerprint": "e7ad1943584e6c2d",
+      "dHash": "0c01183830303000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "tristana",
+      "cost": 3,
+      "fingerprint": "98ca3f39c0623db5",
+      "dHash": "06061e1e45c5c000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "vi",
+      "cost": 3,
+      "fingerprint": "e5729a8d62738d98",
+      "dHash": "0000303029090f00",
+      "source": "placeholder"
+    },
+    {
+      "championId": "ahri",
+      "cost": 4,
+      "fingerprint": "e6269495939b4b6c",
+      "dHash": "2339d8c698180000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "amumu",
+      "cost": 4,
+      "fingerprint": "cf3330cc932d64b3",
+      "dHash": "00808086860c0c00",
+      "source": "placeholder"
+    },
+    {
+      "championId": "aphelios",
+      "cost": 4,
+      "fingerprint": "ea6b1be43936c219",
+      "dHash": "1c1c1e1818181800",
+      "source": "placeholder"
+    },
+    {
+      "championId": "brambleback",
+      "cost": 4,
+      "fingerprint": "a765cc12f3cd1352",
+      "dHash": "30303131b1918100",
+      "source": "placeholder"
+    },
+    {
+      "championId": "ezreal",
+      "cost": 4,
+      "fingerprint": "b19e9a316c63656c",
+      "dHash": "0303313171612000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "lillia",
+      "cost": 4,
+      "fingerprint": "f86001ff531f1f81",
+      "dHash": "787843e3e3c3c000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "malphite",
+      "cost": 4,
+      "fingerprint": "b3cece31316831ce",
+      "dHash": "0018186061611900",
+      "source": "placeholder"
+    },
+    {
+      "championId": "morgana",
+      "cost": 4,
+      "fingerprint": "9b9bc46666393934",
+      "dHash": "06068787d3d0c000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "nidalee",
+      "cost": 4,
+      "fingerprint": "c363689c1c3c6de3",
+      "dHash": "30363e1a13130300",
+      "source": "placeholder"
+    },
+    {
+      "championId": "sentinel",
+      "cost": 4,
+      "fingerprint": "c72d3897b5565838",
+      "dHash": "0118181911131300",
+      "source": "placeholder"
+    },
+    {
+      "championId": "sett",
+      "cost": 4,
+      "fingerprint": "9396c64978a659e9",
+      "dHash": "0303038384869800",
+      "source": "placeholder"
+    },
+    {
+      "championId": "sivir",
+      "cost": 4,
+      "fingerprint": "a5315a961d6d651e",
+      "dHash": "0121303121111800",
+      "source": "placeholder"
+    },
+    {
+      "championId": "soraka",
+      "cost": 4,
+      "fingerprint": "931d6cd2e26dd2c2",
+      "dHash": "3189898103030000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "zyra",
+      "cost": 4,
+      "fingerprint": "8f78f08f69343549",
+      "dHash": "0000b0b484850700",
+      "source": "placeholder"
+    },
+    {
+      "championId": "alune",
+      "cost": 5,
+      "fingerprint": "ea4e48738cb133ce",
+      "dHash": "1818188090606000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "ashe",
+      "cost": 5,
+      "fingerprint": "a62e99d9e0c9c366",
+      "dHash": "c0d8181818383000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "draven",
+      "cost": 5,
+      "fingerprint": "f9399e8e4c70b44c",
+      "dHash": "c3e4e2660c0c0c00",
+      "source": "placeholder"
+    },
+    {
+      "championId": "elderdragon",
+      "cost": 5,
+      "fingerprint": "b968c697ce70b0f0",
+      "dHash": "1c6c6ce880808000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "gnar",
+      "cost": 5,
+      "fingerprint": "e59ad865929c6732",
+      "dHash": "3030808030380c00",
+      "source": "placeholder"
+    },
+    {
+      "championId": "ivern",
+      "cost": 5,
+      "fingerprint": "ed6cca3a63919cc4",
+      "dHash": "181808f8e0c0c000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "kennen",
+      "cost": 5,
+      "fingerprint": "ea62679c91959dc1",
+      "dHash": "1818180ac2c2c200",
+      "source": "placeholder"
+    },
+    {
+      "championId": "lux",
+      "cost": 5,
+      "fingerprint": "9a19e5e6b4351995",
+      "dHash": "188e8e8e6a0e0c00",
+      "source": "placeholder"
+    },
+    {
+      "championId": "maokai",
+      "cost": 5,
+      "fingerprint": "b0cbc730c9c7349b",
+      "dHash": "00000c08c0c0f000",
+      "source": "placeholder"
+    },
+    {
+      "championId": "taric",
+      "cost": 5,
+      "fingerprint": "be3dc1c6c1683cc9",
+      "dHash": "00c0c0c080c0c000",
+      "source": "placeholder"
+    }
+  ]
+}

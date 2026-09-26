@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "1.0",
+  "description": "中文文案集中管理（Q9 国服中文名回填清单在此维护）。UI 禁止硬编码展示文案。",
+  "common": {
+    "appName": "TFT 牌库剩余计数器",
+    "estimate": "估算",
+    "remaining": "剩",
+    "pool": "池",
+    "toThreeStar": "距离 3★ 还差 {n} 张",
+    "coverage": "巡查 {scanned}/{total}",
+    "unknown": "未知",
+    "locked": "已锁定",
+    "confirm": "确定",
+    "cancel": "取消",
+    "reset": "重置",
+    "undo": "撤销",
+    "close": "关闭"
+  },
+  "hud": {
+    "title": "TFT 牌库剩余",
+    "statusIdle": "待扫描",
+    "statusScanning": "扫描中",
+    "statusPaused": "已暂停",
+    "statusStale": "数据陈旧",
+    "statusError": "扫描失败",
+    "coverageHint": "已巡查 {scanned}/{total} 家，真实剩余 {min}~{max} 张",
+    "lowCoverageWarning": "覆盖率不足，数值可信度低",
+    "watchlist": "我的追卡",
+    "filterAllCosts": "全部费用",
+    "searchPlaceholder": "搜索弈子…",
+    "manualCorrection": "手动校正",
+    "baselineUnconfirmed": "基线待实测",
+    "overflowLabel": "已观测 {observed} / 池 {total}（+{overflow} 复制器）· 剩余 0"
+  },
+  "correction": {
+    "title": "校正：{name}",
+    "bySeat": "各家持有",
+    "setTo": "设为",
+    "adjustUp": "+1",
+    "adjustDown": "-1",
+    "owner": "归属调整",
+    "lockToggle": "锁定（锁定后自动扫描不再修改）",
+    "candidates": "识别候选",
+    "unknownSeatHint": "未识别归属，请指定是第几家"
+  },
+  "settings": {
+    "general": "常规",
+    "scan": "扫描",
+    "recognition": "识别",
+    "templates": "识别素材",
+    "estimate": "估算参数",
+    "compliance": "合规说明",
+    "log": "日志"
+  },
+  "onboarding": {
+    "complianceTitle": "合规声明",
+    "complianceBody": "本工具只读取屏幕像素并在本地完成识别与计算。它不会读取或修改游戏进程内存、不会注入代码、不会模拟鼠标键盘、不会修改游戏文件、不会拦截网络包，也不会上传任何截图或对局数据。",
+    "complianceCheckbox": "我已阅读并理解上述声明",
+    "resolutionTitle": "分辨率自检",
+    "calibrationTitle": "棋盘标定",
+    "calibrationHint": "请依次拖拽框选：己方棋盘 / 备战席 / 商店。标定结果按屏幕比例保存，跨分辨率复用。"
+  },
+  "compliance": {
+    "doesDo": [
+      "使用操作系统公开的屏幕捕获接口读取屏幕像素",
+      "在本地做图像识别、模板匹配与统计计算",
+      "读写本应用自己的配置文件与本地日志"
+    ],
+    "doesNotDo": [
+      "读取 / 写入游戏进程内存",
+      "DLL 注入或任何形式的进程内 Hook",
+      "模拟鼠标 / 键盘输入（含自动切换巡查视角）",
+      "修改游戏文件、配置文件或资源包",
+      "拦截 / 修改 / 伪造网络数据包",
+      "自动化游戏决策与操作",
+      "绕过反作弊机制或隐藏自身窗口",
+      "上传用户游戏画面或对局数据到任何服务器"
+    ]
+  },
+  "errors": {
+    "CAP_BACKEND_UNAVAILABLE": "屏幕捕获后端不可用，已尝试降级",
+    "CAP_BLACK_FRAME": "捕获到纯黑帧，请在游戏内切换为无边框/窗口化全屏",
+    "CAP_TIMEOUT": "屏幕捕获超时",
+    "CAP_OS_UNSUPPORTED": "当前系统版本不支持 Windows Graphics Capture",
+    "VIS_NO_BOARD": "未检测到棋盘，已休眠等待",
+    "VIS_CALIBRATION_MISSING": "尚未完成棋盘标定，请先运行标定向导",
+    "VIS_TEMPLATE_EMPTY": "识别模板为空，请先生成或导入模板集",
+    "VIS_LOW_CONFIDENCE": "识别置信度偏低，建议手动校正",
+    "VIS_SEAT_UNKNOWN": "未能判断当前是第几家，请手动指定",
+    "BASE_INVALID_JSON": "卡池基线文件不是合法 JSON",
+    "BASE_SCHEMA_FAIL": "卡池基线文件结构校验失败",
+    "BASE_SET_MISMATCH": "当前模式卡池基线未配置（仅支持 Set 18）",
+    "BASE_UNCONFIRMED": "卡池基线尚未实测确认，数值仅供参考",
+    "ENG_OVERFLOW": "已观测张数超过卡池总数，疑似使用了英雄复制器",
+    "ENG_UNKNOWN_CHAMPION": "观测到未知弈子 id，已忽略",
+    "SYS_IPC_TIMEOUT": "进程间通信超时",
+    "SYS_WORKER_CRASH": "识别进程崩溃，正在自动重启",
+    "SYS_STORE_WRITE_FAIL": "配置写入失败"
+  }
+}

@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------
+   全局基础样式
+   HUD 是透明无边框窗口，必须自己做背景、圆角、滚动条与拖拽热区。
+   ------------------------------------------------------------------ */
+
+:root {
+  --hud-bg: rgba(12, 14, 20, 0.82);
+  --hud-panel: rgba(24, 27, 36, 0.92);
+  --hud-border: rgba(148, 163, 184, 0.22);
+  --hud-text: #e2e8f0;
+  --hud-dim: #94a3b8;
+}
+
+[data-theme='light'] {
+  --hud-bg: rgba(248, 250, 252, 0.92);
+  --hud-panel: rgba(255, 255, 255, 0.96);
+  --hud-border: rgba(15, 23, 42, 0.16);
+  --hud-text: #0f172a;
+  --hud-dim: #475569;
+}
+
+[data-theme='high-contrast'] {
+  --hud-bg: #000000;
+  --hud-panel: #000000;
+  --hud-border: #ffffff;
+  --hud-text: #ffffff;
+  --hud-dim: #e2e8f0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Microsoft YaHei UI', 'PingFang SC', 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--hud-text);
+  background: transparent;
+  /* 悬浮窗禁止文本选中，避免拖拽时误选 */
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+  overflow: hidden;
+}
+
+.hud-root {
+  background: var(--hud-bg);
+  border: 1px solid var(--hud-border);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+}
+
+/* 细滚动条：HUD 宽度只有 340px，原生滚动条太占地方 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+
+/* 拖拽热区（标题栏） */
+.drag-region {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}

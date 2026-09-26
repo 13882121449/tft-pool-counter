@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tft-pool-counter.local/schemas/pool-baseline.schema.json",
+  "title": "TFT Pool Baseline",
+  "description": "卡池基线文件（data/pool-baseline.json）结构校验用 JSON Schema。注意：文件内字段为 snake_case，由 src/core/baseline/load-baseline.ts 转换为 camelCase 运行时类型。",
+  "type": "object",
+  "required": ["meta", "pool_size_by_cost", "star_copy_cost", "champions"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["schema_version", "set_number", "patch"],
+      "properties": {
+        "schema_version": { "type": "string", "minLength": 1 },
+        "set_number": { "type": "number" },
+        "set_name_cn": { "type": ["string", "null"] },
+        "set_name_en": { "type": ["string", "null"] },
+        "patch": { "type": "string", "minLength": 1 },
+        "generated_at": { "type": ["string", "null"] },
+        "CONFIRMED": { "type": "boolean" },
+        "confidence": { "type": "object" }
+      }
+    },
+    "pool_size_by_cost": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["copies_per_champion", "distinct_champions"],
+        "properties": {
+          "copies_per_champion": { "type": "number", "minimum": 1 },
+          "distinct_champions": { "type": "number", "minimum": 0 },
+          "tier_total": { "type": "number", "minimum": 0 },
+          "CONFIRMED": { "type": "boolean" }
+        }
+      }
+    },
+    "star_copy_cost": {
+      "type": "object",
+      "required": ["1", "2", "3"],
+      "description": "星级 → 消耗张数。除 1/2/3/4 的数值键外，文件里还可能携带 note 等说明性字段，故不做 additionalProperties 约束。"
+    },
+    "champions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/champion" }
+    },
+    "non_pool_units_blacklist": {
+      "type": ["object", "null"],
+      "properties": {
+        "items": { "type": "array", "items": { "type": "string" } },
+        "non_pool_unit_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true,
+          "description": "非池单位的 id 列表（识别与引擎过滤实际使用的字段），须与 data/non-pool-units.json 的 units[].id 一致；items 仅为人类可读描述。"
+        }
+      }
+    },
+    "shop_odds_by_level": {
+      "type": ["object", "null"],
+      "description": "商店各费出现概率。真实文件形如 { patch, CONFIRMED, confidence, levels: { \"1\": [..5 个数..], ... } }。",
+      "properties": {
+        "patch": { "type": "string" },
+        "CONFIRMED": { "type": "boolean" },
+        "confidence": { "type": "string" },
+        "levels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "number" }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "champion": {
+      "type": "object",
+      "required": ["id", "name_en", "cost", "pool_total"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name_en": { "type": "string", "minLength": 1 },
+        "name_cn": { "type": ["string", "null"] },
+        "cost": { "type": "number", "minimum": 1, "maximum": 5 },
+        "traits": { "type": "array", "items": { "type": "string" } },
+        "traits_cn": {
+          "type": "array",
+          "items": { "type": ["string", "null"] }
+        },
+        "pool_total": { "type": "number", "minimum": 1 },
+        "CONFIRMED": { "type": "boolean" },
+        "special": {
+          "type": ["object", "null"],
+          "properties": {
+            "team_slots": { "type": "number", "minimum": 1 },
+            "pool_copies_consumed": { "type": "number", "minimum": 1 },
+            "riftbeast_trait_contribution": { "type": "number", "minimum": 0 },
+            "note": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

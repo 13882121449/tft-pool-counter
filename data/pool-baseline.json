@@ -1,0 +1,215 @@
+{
+  "meta": {
+    "schema_version": "1.0",
+    "file": "pool-baseline.json",
+    "purpose": "TFT 牌库剩余计数器 —— 赛季卡池基线数据（唯一数据源，勿硬编码到代码）",
+    "generated_by": "software-product-manager (许清楚)",
+    "generated_at": "2026-09-14",
+    "game": "Teamfight Tactics (云顶之弈)",
+    "region": "国服云顶之弈 / Global（名单一致；国服中文名见各条 name_cn）",
+
+    "set_number": 18,
+    "set_name_cn": "自然之力",
+    "set_name_en": "Enchanted Wilds",
+    "patch": "18.1 ~ 18.2",
+    "live_since": "2026-08-26",
+    "live_since_cn": "2026-08-27",
+    "set_end": null,
+    "engine_note": "首个全面迁移至虚幻引擎的赛季；国服客户端并行保留 S17 赛季与 S16「恭喜发财」模式",
+
+    "CONFIRMED": false,
+    "confidence": {
+      "set_identity": "high",
+      "pool_size_by_cost": "high (3 independent Set-18 sources agree)",
+      "champion_roster_en": "medium-high (3 sources agree: 14/13/14/14/10 = 65)",
+      "champion_traits": "medium-high",
+      "champion_name_cn": "medium (TFT 专属野怪弈子中文名待核实，见 unverified 字段)",
+      "shop_odds_by_level": "medium-high"
+    },
+    "CONFIRMED_false_reasons": [
+      "数据来自社区/wiki 第三方站点，非 Riot 官方数据文件或官方 API",
+      "存在冲突来源：tftactics.gg/db/rolling 与部分 tft.ninja 旧页面仍写 22/20/17/10/9（历史旧值），本文件采用 30/25/18/10/9",
+      "2 费档弈子种类数存在分歧：多数来源 13，tft-lab.com 记 14（总量 65 vs 66）",
+      "TFT 专属野怪弈子（Cinderling / Pebbles / Mama Beak / Sentinel / Brambleback）的国服官方中文名未确认",
+      "赛季中途补丁（18.2 及后续）可能调整卡池数量或弈子名单，需按 patch 复核"
+    ],
+    "verification_todo": [
+      "用一局实测复核池总数：选一个 1 费弈子全买至买不动，数出张数是否为 30",
+      "核对国服客户端内 65 个弈子的中文名与羁绊译名",
+      "每次版本更新后重新拉取并对比本文件"
+    ]
+  },
+
+  "pool_size_by_cost": {
+    "1": { "copies_per_champion": 30, "distinct_champions": 14, "tier_total": 420, "CONFIRMED": false, "confidence": "high" },
+    "2": { "copies_per_champion": 25, "distinct_champions": 13, "tier_total": 325, "CONFIRMED": false, "confidence": "high", "note": "distinct_champions 有分歧：tft-lab.com 记为 14（tier_total 350）" },
+    "3": { "copies_per_champion": 18, "distinct_champions": 14, "tier_total": 252, "CONFIRMED": false, "confidence": "high" },
+    "4": { "copies_per_champion": 10, "distinct_champions": 14, "tier_total": 140, "CONFIRMED": false, "confidence": "high" },
+    "5": { "copies_per_champion": 9, "distinct_champions": 10, "tier_total": 90, "CONFIRMED": false, "confidence": "high" }
+  },
+  "pool_size_history_reference": {
+    "Set 10 ~ Set 13": { "by_cost": [22, 20, 17, 10, 9], "CONFIRMED": false, "confidence": "medium", "note": "历史旧值；部分站点页面未更新仍显示此值" },
+    "Set 14 ~ Set 18": { "by_cost": [30, 25, 18, 10, 9], "CONFIRMED": false, "confidence": "medium-high" }
+  },
+
+  "star_copy_cost": { "1": 1, "2": 3, "3": 9, "4": 9, "note": "4★ 为 S18「日蚀 Solar」羁绊的战斗内临时升星，不额外消耗牌库，按 9 张计" },
+
+  "pool_rules": {
+    "formula": "remaining(champion) = pool_total(champion) - sum_over_players(copies_held_by_player)",
+    "snapshot_model": true,
+    "snapshot_model_note": "每次扫描只统计当前画面可见单位，不追踪历史交易；卖出/淘汰导致的回池在下次扫描自动体现，但两次扫描之间的「买入又卖出」会被漏掉（高估剩余）",
+    "unpurchased_shop_copies": "不计入消耗（roll 时取样，未购买即归还）",
+    "carousel": "选秀中的弈子从池中抽取（Rioter Adam Cohen 确认）",
+    "eliminated_player": "棋盘 + 备战席全部回池",
+    "sold_unit": "回池",
+    "champion_duplicator": "池中仍有剩余时正常取 1 张；池为 0 时仍可复制，生成「额外副本」，该额外副本卖出/玩家被淘汰时不回池（V10.12 后行为，S18 未二次确认）",
+    "double_slot_unit": "远古巨龙 Elder Dragon 占 2 上阵人口，但只消耗池中 1 张 —— 必须按「单位实例」计数，不得按格子数计数"
+  },
+
+  "non_pool_units_blacklist": {
+    "description": "这些单位/生成物不从牌库中取牌，OCR 必须过滤，否则会系统性高估消耗（误差来源 E5）",
+    "items": [
+      "召唤师系召唤物（Yorick 约里克的 Spirit Walker、Azir 阿兹尔的士兵、Zyra 婕拉与 Mama Beak 锋喙鸟的召唤物）",
+      "永恒之森 Elderwood 植物（Stonebark Tree / Lifebloom / Deepwood Protector）",
+      "艾翁 Ivern（Greenfather/翠神）种子生成的增益地形格上的单位",
+      "灵魂莲华 Blossom 的小精灵相关生成物",
+      "小精灵 Wisps（S18 赛季机制，占商店格位，是商品不是弈子）",
+      "日蚀/月蚀 Solar/Lunar 等特效产生的临时单位",
+      "战斗中的分身、镜像（如 LeBlanc 乐芙兰的镜像）"
+    ],
+    "items_note": "items 仅供人阅读（按机制分组的中文描述），**识别与引擎过滤一律使用 non_pool_unit_ids**。",
+    "non_pool_unit_ids": [
+      "summon-yorick-spirit-walker",
+      "summon-azir-soldier",
+      "summon-zyra-plant",
+      "summon-mamabeak-spawn",
+      "terrain-elderwood-plant",
+      "terrain-ivern-seed",
+      "event-blossom-sprite",
+      "event-wisp",
+      "event-solar-lunar-temp",
+      "mirror-leblanc"
+    ],
+    "non_pool_unit_ids_note": "必须与 data/non-pool-units.json 的 units[].id 一一对应；后者额外携带中文名与视觉特征描述，供素材采集与人工判读使用。",
+    "CONFIRMED": false,
+    "confidence": "medium"
+  },
+
+  "mechanics_affecting_pool": [
+    { "id": "wisps", "name_cn": "小精灵", "name_en": "Wisps", "affects_pool": false, "note": "S18 赛季机制，出现在商店最右栏位，每 2 个商店出现一次，占 1 个商店格位；不消耗牌库但影响刷牌效率与概率估算" },
+    { "id": "carousel", "name_cn": "选秀", "name_en": "Carousel", "affects_pool": true, "note": "选秀弈子从池中抽取；选秀阶段画面无完整棋盘，工具应暂停扫描并标记 stale" },
+    { "id": "champion_duplicator", "name_cn": "英雄复制器/妮蔻之助", "name_en": "Champion Duplicator", "affects_pool": true, "note": "可超额生成；观测消耗可能 > 池总数，UI 应显示「+N 复制器」而非负数" },
+    { "id": "augments", "name_cn": "强化符文", "name_en": "Augments", "affects_pool": "partial", "note": "赠送单位的符文会从池中取牌（如 Three's Company / True Twos / Crown & Soul 类）；快照口径自动覆盖" },
+    { "id": "encounters", "name_cn": "奇遇", "name_en": "Encounters", "affects_pool": "partial", "note": "部分奇遇直接给弈子；S18 已从开场奇遇池移除 Loot Subscription / Artifact Anvil / Reroll Start" },
+    { "id": "lux_avatar", "name_cn": "化身（拉克丝）", "name_en": "Avatar (Lux)", "affects_pool": true, "note": "拉克丝只有一个共享池（9 张），羁绊随场上拉克丝变化，按单一弈子计数" },
+    { "id": "solar_4star", "name_cn": "日蚀 4★ 临时升星", "name_en": "Solar 4-star", "affects_pool": false, "note": "战斗内临时，按 9 张计" },
+    { "id": "elimination", "name_cn": "玩家淘汰回池", "name_en": "Elimination", "affects_pool": true },
+    { "id": "sell", "name_cn": "卖出回池", "name_en": "Sell", "affects_pool": true },
+    { "id": "other_modes", "name_cn": "并行模式（S17 / 恭喜发财）", "name_en": "Parallel modes", "affects_pool": true, "note": "国服客户端并行保留 S17 与 S16「恭喜发财」模式；恭喜发财存在 7 费卡与不同卡池。本基线不适用，工具应提示不支持" }
+  ],
+
+  "shop_odds_by_level": {
+    "patch": "18.1/18.2",
+    "CONFIRMED": false,
+    "confidence": "medium-high",
+    "levels": {
+      "1":  [100, 0, 0, 0, 0],
+      "2":  [100, 0, 0, 0, 0],
+      "3":  [75, 25, 0, 0, 0],
+      "4":  [55, 30, 15, 0, 0],
+      "5":  [45, 33, 20, 2, 0],
+      "6":  [30, 40, 25, 5, 0],
+      "7":  [16, 30, 43, 10, 1],
+      "8":  [15, 20, 32, 30, 3],
+      "9":  [10, 17, 25, 33, 15],
+      "10": [5, 10, 20, 40, 25],
+      "11": [1, 2, 12, 50, 35]
+    }
+  },
+
+  "champions": [
+    { "id": "akali",     "name_en": "Akali",     "name_cn": "阿卡丽",   "cost": 1, "traits": ["Inferno", "Adaptor", "Ravager"],     "traits_cn": ["地狱火", "魔战士", "狂战士"], "pool_total": 30, "CONFIRMED": false },
+    { "id": "camille",   "name_en": "Camille",   "name_cn": "卡蜜尔",   "cost": 1, "traits": ["Coven", "Ravager"],               "traits_cn": ["魔女", "狂战士"],           "pool_total": 30, "CONFIRMED": false },
+    { "id": "cinderling","name_en": "Cinderling","name_cn": "绯红树怪", "cost": 1, "traits": ["Riftbeast", "Hunter"],           "traits_cn": ["峡谷野怪", "猎人"],         "pool_total": 30, "CONFIRMED": false, "name_cn_confidence": "low" },
+    { "id": "karma",     "name_en": "Karma",     "name_cn": "卡尔玛",   "cost": 1, "traits": ["Blossom", "Spellweaver"],        "traits_cn": ["灵魂莲华", "法师"],         "pool_total": 30, "CONFIRMED": false },
+    { "id": "kobuko",    "name_en": "Kobuko",    "name_cn": "可酷伯",   "cost": 1, "traits": ["Sprykin", "Brawler"],            "traits_cn": ["森林妖精", "斗士"],         "pool_total": 30, "CONFIRMED": false },
+    { "id": "leona",     "name_en": "Leona",     "name_cn": "蕾欧娜",   "cost": 1, "traits": ["Solar", "Defender"],             "traits_cn": ["日蚀", "护卫"],             "pool_total": 30, "CONFIRMED": false },
+    { "id": "ornn",      "name_en": "Ornn",      "name_cn": "奥恩",     "cost": 1, "traits": ["Elderwood", "Defender"],         "traits_cn": ["永恒之森", "护卫"],         "pool_total": 30, "CONFIRMED": false },
+    { "id": "pebbles",   "name_en": "Pebbles",   "name_cn": "驻灵",     "cost": 1, "traits": ["Riftbeast", "Invoker"],          "traits_cn": ["峡谷野怪", "神谕"],         "pool_total": 30, "CONFIRMED": false, "name_cn_confidence": "low" },
+    { "id": "rakan",     "name_en": "Rakan",     "name_cn": "洛",       "cost": 1, "traits": ["Fae", "Juggernaut", "Vanguard"], "traits_cn": ["花仙", "小主宰", "重装战士"], "pool_total": 30, "CONFIRMED": false },
+    { "id": "reksai",    "name_en": "Rek'Sai",   "name_cn": "雷克塞",   "cost": 1, "traits": ["Blackthorn", "Brawler"],         "traits_cn": ["黑荆棘/古神", "斗士"],      "pool_total": 30, "CONFIRMED": false, "traits_cn_confidence": "medium" },
+    { "id": "varus",     "name_en": "Varus",     "name_cn": "韦鲁斯",   "cost": 1, "traits": ["Inferno", "Rapidfire"],          "traits_cn": ["地狱火", "迅捷射手"],       "pool_total": 30, "CONFIRMED": false },
+    { "id": "veigar",    "name_en": "Veigar",    "name_cn": "维迦",     "cost": 1, "traits": ["Blackthorn", "Sprykin", "Spellweaver"], "traits_cn": ["黑荆棘/古神", "森林妖精", "法师"], "pool_total": 30, "CONFIRMED": false, "traits_cn_confidence": "medium" },
+    { "id": "xayah",     "name_en": "Xayah",     "name_cn": "霞",       "cost": 1, "traits": ["Elderwood", "Fae", "Rapidfire"], "traits_cn": ["永恒之森", "花仙", "迅捷射手"], "pool_total": 30, "CONFIRMED": false },
+    { "id": "yorick",    "name_en": "Yorick",    "name_cn": "约里克",   "cost": 1, "traits": ["Blossom", "Juggernaut", "Summoner"], "traits_cn": ["灵魂莲华", "小主宰", "召唤师"], "pool_total": 30, "CONFIRMED": false, "note": "召唤物不消耗牌库，需加入 non_pool_units_blacklist" },
+
+    { "id": "alistar",    "name_en": "Alistar",    "name_cn": "阿利斯塔", "cost": 2, "traits": ["Elderwood", "Brawler"],   "traits_cn": ["永恒之森", "斗士"],       "pool_total": 25, "CONFIRMED": false },
+    { "id": "caitlyn",    "name_en": "Caitlyn",    "name_cn": "凯特琳",   "cost": 2, "traits": ["Coven", "Hunter"],        "traits_cn": ["魔女", "猎人"],           "pool_total": 25, "CONFIRMED": false },
+    { "id": "elise",      "name_en": "Elise",      "name_cn": "伊莉丝",   "cost": 2, "traits": ["Coven", "Vanguard"],      "traits_cn": ["魔女", "重装战士"],       "pool_total": 25, "CONFIRMED": false },
+    { "id": "gromp",      "name_en": "Gromp",      "name_cn": "魔沼蛙",   "cost": 2, "traits": ["Riftbeast", "Adaptor"],   "traits_cn": ["峡谷野怪", "魔战士"],     "pool_total": 25, "CONFIRMED": false },
+    { "id": "kayle",      "name_en": "Kayle",      "name_cn": "凯尔",     "cost": 2, "traits": ["Solar", "Rapidfire"],     "traits_cn": ["日蚀", "迅捷射手"],       "pool_total": 25, "CONFIRMED": false },
+    { "id": "leblanc",    "name_en": "LeBlanc",    "name_cn": "乐芙兰",   "cost": 2, "traits": ["Elderwood", "Spellweaver"], "traits_cn": ["永恒之森", "法师"],    "pool_total": 25, "CONFIRMED": false },
+    { "id": "murkwolf",   "name_en": "Murkwolf",   "name_cn": "暗影狼",   "cost": 2, "traits": ["Riftbeast", "Ravager"],   "traits_cn": ["峡谷野怪", "狂战士"],     "pool_total": 25, "CONFIRMED": false },
+    { "id": "scuttlecrab","name_en": "Scuttlecrab","name_cn": "峡谷迅捷蟹","cost": 2, "traits": ["Riftbeast", "Juggernaut"], "traits_cn": ["峡谷野怪", "小主宰"],  "pool_total": 25, "CONFIRMED": false },
+    { "id": "sejuani",    "name_en": "Sejuani",    "name_cn": "瑟庄妮",   "cost": 2, "traits": ["Solar", "Juggernaut"],    "traits_cn": ["日蚀", "小主宰"],         "pool_total": 25, "CONFIRMED": false },
+    { "id": "shen",       "name_en": "Shen",       "name_cn": "慎",       "cost": 2, "traits": ["Inferno", "Defender"],    "traits_cn": ["地狱火", "护卫"],         "pool_total": 25, "CONFIRMED": false },
+    { "id": "teemo",      "name_en": "Teemo",      "name_cn": "提莫",     "cost": 2, "traits": ["Sprykin", "Invoker"],     "traits_cn": ["森林妖精", "神谕"],       "pool_total": 25, "CONFIRMED": false },
+    { "id": "warwick",    "name_en": "Warwick",    "name_cn": "沃里克",   "cost": 2, "traits": ["Blackthorn", "Ravager"],  "traits_cn": ["黑荆棘/古神", "狂战士"],  "pool_total": 25, "CONFIRMED": false, "traits_cn_confidence": "medium" },
+    { "id": "yunara",     "name_en": "Yunara",     "name_cn": "芸阿娜",   "cost": 2, "traits": ["Blossom", "Executioner"], "traits_cn": ["灵魂莲华", "裁决使"],     "pool_total": 25, "CONFIRMED": false },
+
+    { "id": "azir",        "name_en": "Azir",        "name_cn": "阿兹尔",   "cost": 3, "traits": ["Blackthorn", "Executioner", "Summoner"], "traits_cn": ["黑荆棘/古神", "裁决使", "召唤师"], "pool_total": 18, "CONFIRMED": false, "note": "召唤物不消耗牌库" },
+    { "id": "cassiopeia",  "name_en": "Cassiopeia",  "name_cn": "卡西奥佩娅","cost": 3, "traits": ["Coven", "Spellweaver"],       "traits_cn": ["魔女", "法师"],                    "pool_total": 18, "CONFIRMED": false },
+    { "id": "diana",       "name_en": "Diana",       "name_cn": "黛安娜",   "cost": 3, "traits": ["Lunar", "Ravager", "Vanguard"],"traits_cn": ["月蚀", "狂战士", "重装战士"],    "pool_total": 18, "CONFIRMED": false },
+    { "id": "fiddlesticks","name_en": "Fiddlesticks","name_cn": "费德提克", "cost": 3, "traits": ["Flora Fatalis", "Defender", "Spellweaver"], "traits_cn": [null, "护卫", "法师"], "pool_total": 18, "CONFIRMED": false, "traits_cn_confidence": "low" },
+    { "id": "hecarim",     "name_en": "Hecarim",     "name_cn": "赫卡里姆", "cost": 3, "traits": ["Elderwood", "Vanguard"],      "traits_cn": ["永恒之森", "重装战士"],           "pool_total": 18, "CONFIRMED": false },
+    { "id": "khazix",      "name_en": "Kha'Zix",     "name_cn": "卡兹克",   "cost": 3, "traits": ["Rival"],                      "traits_cn": ["宿敌"],                           "pool_total": 18, "CONFIRMED": false },
+    { "id": "kogmaw",      "name_en": "Kog'Maw",     "name_cn": "克格莫",   "cost": 3, "traits": ["Caustic", "Invoker", "Adaptor"], "traits_cn": ["腐蚀", "神谕", "魔战士"],      "pool_total": 18, "CONFIRMED": false },
+    { "id": "krug",        "name_en": "Krug",        "name_cn": "石甲虫",   "cost": 3, "traits": ["Riftbeast", "Brawler"],       "traits_cn": ["峡谷野怪", "斗士"],               "pool_total": 18, "CONFIRMED": false },
+    { "id": "mamabeak",    "name_en": "Mama Beak",   "name_cn": "锋喙鸟",   "cost": 3, "traits": ["Riftbeast", "Summoner", "Rapidfire"], "traits_cn": ["峡谷野怪", "召唤师", "迅捷射手"], "pool_total": 18, "CONFIRMED": false, "name_cn_confidence": "medium", "alt_name_en": "Raptor" },
+    { "id": "masteryi",    "name_en": "Master Yi",   "name_cn": "易",       "cost": 3, "traits": ["Blossom", "Adaptor"],         "traits_cn": ["灵魂莲华", "魔战士"],             "pool_total": 18, "CONFIRMED": false },
+    { "id": "rammus",      "name_en": "Rammus",      "name_cn": "拉莫斯",   "cost": 3, "traits": ["Sprykin", "Defender"],        "traits_cn": ["森林妖精", "护卫"],               "pool_total": 18, "CONFIRMED": false },
+    { "id": "rengar",      "name_en": "Rengar",      "name_cn": "雷恩加尔", "cost": 3, "traits": ["Rival"],                      "traits_cn": ["宿敌"],                           "pool_total": 18, "CONFIRMED": false },
+    { "id": "tristana",    "name_en": "Tristana",    "name_cn": "崔丝塔娜", "cost": 3, "traits": ["Fae", "Sprykin", "Hunter"],   "traits_cn": ["花仙", "森林妖精", "猎人"],       "pool_total": 18, "CONFIRMED": false },
+    { "id": "vi",          "name_en": "Vi",          "name_cn": "蔚",       "cost": 3, "traits": ["Primal", "Juggernaut"],      "traits_cn": [null, "小主宰"],                   "pool_total": 18, "CONFIRMED": false, "traits_cn_confidence": "low" },
+
+    { "id": "ahri",        "name_en": "Ahri",        "name_cn": "阿狸",           "cost": 4, "traits": ["Blossom", "Spellweaver"],      "traits_cn": ["灵魂莲华", "法师"],           "pool_total": 10, "CONFIRMED": false },
+    { "id": "amumu",       "name_en": "Amumu",       "name_cn": "阿木木",         "cost": 4, "traits": ["Inferno", "Juggernaut"],      "traits_cn": ["地狱火", "小主宰"],           "pool_total": 10, "CONFIRMED": false },
+    { "id": "aphelios",    "name_en": "Aphelios",    "name_cn": "厄斐琉斯",       "cost": 4, "traits": ["Lunar", "Rapidfire"],         "traits_cn": ["月蚀", "迅捷射手"],           "pool_total": 10, "CONFIRMED": false },
+    { "id": "brambleback", "name_en": "Brambleback", "name_cn": "绯红印记树怪",   "cost": 4, "traits": ["Riftbeast", "Ravager"],       "traits_cn": ["峡谷野怪", "狂战士"],         "pool_total": 10, "CONFIRMED": false },
+    { "id": "ezreal",      "name_en": "Ezreal",      "name_cn": "伊泽瑞尔",       "cost": 4, "traits": ["Elderwood", "Executioner"],   "traits_cn": ["永恒之森", "裁决使"],         "pool_total": 10, "CONFIRMED": false },
+    { "id": "lillia",      "name_en": "Lillia",      "name_cn": "莉莉娅",         "cost": 4, "traits": ["Fae", "Defender"],            "traits_cn": ["花仙", "护卫"],               "pool_total": 10, "CONFIRMED": false },
+    { "id": "malphite",    "name_en": "Malphite",    "name_cn": "墨菲特",         "cost": 4, "traits": ["Blackthorn", "Monolith"],     "traits_cn": ["黑荆棘/古神", null],          "pool_total": 10, "CONFIRMED": false, "traits_cn_confidence": "low" },
+    { "id": "morgana",     "name_en": "Morgana",     "name_cn": "莫甘娜",         "cost": 4, "traits": ["Coven", "Invoker"],           "traits_cn": ["魔女", "神谕"],               "pool_total": 10, "CONFIRMED": false },
+    { "id": "nidalee",     "name_en": "Nidalee",     "name_cn": "奈德丽",         "cost": 4, "traits": ["Primal", "Adaptor"],          "traits_cn": [null, "魔战士"],               "pool_total": 10, "CONFIRMED": false, "traits_cn_confidence": "low" },
+    { "id": "sentinel",    "name_en": "Sentinel",    "name_cn": "苍蓝雕纹魔像",   "cost": 4, "traits": ["Riftbeast", "Vanguard", "Invoker"], "traits_cn": ["峡谷野怪", "重装战士", "神谕"], "pool_total": 10, "CONFIRMED": false, "name_cn_confidence": "medium" },
+    { "id": "sett",        "name_en": "Sett",        "name_cn": "瑟提",           "cost": 4, "traits": ["Blossom", "Brawler"],         "traits_cn": ["灵魂莲华", "斗士"],           "pool_total": 10, "CONFIRMED": false },
+    { "id": "sivir",       "name_en": "Sivir",       "name_cn": "希维尔",         "cost": 4, "traits": ["Primal", "Hunter"],           "traits_cn": [null, "猎人"],                 "pool_total": 10, "CONFIRMED": false, "traits_cn_confidence": "low" },
+    { "id": "soraka",      "name_en": "Soraka",      "name_cn": "索拉卡",         "cost": 4, "traits": ["Flora Fatalis", "Executioner"], "traits_cn": [null, "裁决使"],           "pool_total": 10, "CONFIRMED": false, "traits_cn_confidence": "low" },
+    { "id": "zyra",        "name_en": "Zyra",        "name_cn": "婕拉",           "cost": 4, "traits": ["Thornmaiden", "Summoner"],    "traits_cn": [null, "召唤师"],               "pool_total": 10, "CONFIRMED": false, "traits_cn_confidence": "low", "note": "植物召唤物不消耗牌库" },
+
+    { "id": "alune",        "name_en": "Alune",        "name_cn": "拉露恩",     "cost": 5, "traits": ["Attuned", "Lunar", "Spellweaver"], "traits_cn": [null, "月蚀", "法师"], "pool_total": 9, "CONFIRMED": false, "traits_cn_confidence": "low" },
+    { "id": "ashe",         "name_en": "Ashe",         "name_cn": "艾希",       "cost": 5, "traits": ["Blossom", "Hunter"],          "traits_cn": ["灵魂莲华", "猎人"],           "pool_total": 9, "CONFIRMED": false },
+    { "id": "draven",       "name_en": "Draven",       "name_cn": "德莱文",     "cost": 5, "traits": ["Bounty Seeker"],              "traits_cn": ["赏金猎人"],                   "pool_total": 9, "CONFIRMED": false },
+    { "id": "elderdragon",  "name_en": "Elder Dragon", "name_cn": "远古巨龙",   "cost": 5, "traits": ["Apex Predator", "Riftbeast"], "traits_cn": ["顶级掠食者", "峡谷野怪"],    "pool_total": 9, "CONFIRMED": false, "special": { "team_slots": 2, "pool_copies_consumed": 1, "riftbeast_trait_contribution": 2, "note": "占 2 上阵人口但只消耗池中 1 张；OCR 必须按单位实例计数" } },
+    { "id": "gnar",         "name_en": "Gnar",         "name_cn": "纳尔",       "cost": 5, "traits": ["Elderwood", "Sprykin", "Brawler"], "traits_cn": ["永恒之森", "森林妖精", "斗士"], "pool_total": 9, "CONFIRMED": false },
+    { "id": "ivern",        "name_en": "Ivern",        "name_cn": "艾翁",       "cost": 5, "traits": ["Greenfather"],                "traits_cn": ["翠神"],                       "pool_total": 9, "CONFIRMED": false },
+    { "id": "kennen",       "name_en": "Kennen",       "name_cn": "凯南",       "cost": 5, "traits": ["Inferno", "Executioner"],    "traits_cn": ["地狱火", "裁决使"],           "pool_total": 9, "CONFIRMED": false },
+    { "id": "lux",          "name_en": "Lux",          "name_cn": "拉克丝",     "cost": 5, "traits": ["Avatar"],                    "traits_cn": ["化身"],                       "pool_total": 9, "CONFIRMED": false, "special": { "note": "化身：场上/备战席有拉克丝时，商店中所有拉克丝转为该拉克丝的羁绊；全形态共享同一 9 张池，按单一弈子计数" } },
+    { "id": "maokai",       "name_en": "Maokai",       "name_cn": "茂凯",       "cost": 5, "traits": ["Old Growth", "Juggernaut"],  "traits_cn": [null, "小主宰"],                "pool_total": 9, "CONFIRMED": false, "traits_cn_confidence": "low" },
+    { "id": "taric",        "name_en": "Taric",        "name_cn": "塔里克",     "cost": 5, "traits": ["Emerald Aspect", "Vanguard"], "traits_cn": ["翡翠契约", "重装战士"],      "pool_total": 9, "CONFIRMED": false }
+  ],
+
+  "sources": [
+    { "name": "EsportsTales — TFT Set 18 champion pool size, roll odds, and draw chances", "url": "https://esportstales.com/teamfight-tactics/champion-pool-size-and-draw-chances", "used_for": "pool_size_by_cost (30/25/18/10/9)、shop_odds_by_level、carousel 从池中抽取", "credibility": "high" },
+    { "name": "TFT Ninja — Champion Pool Math (Set 18)", "url": "https://tft.ninja/guides/advanced/pool-math", "used_for": "pool_size_by_cost、distinct champions 14/13/14/14/10=65、tier totals", "credibility": "high" },
+    { "name": "TFT Lab（繁中）— 商店與刷新 (SET 18 · 18.1)", "url": "https://tft-lab.com/tw/handbook/shop", "used_for": "pool_size_by_cost 交叉验证、shop_odds", "credibility": "medium-high", "note": "2 费档种类数记为 14（与主流 13 冲突）" },
+    { "name": "RiftDaily — TFT Set 18 Enchanted Wilds release date and key facts", "url": "https://riftdaily.com/tft-set-18-enchanted-wilds/", "used_for": "65 弈子完整名单 + 费用 + 羁绊", "credibility": "medium-high" },
+    { "name": "Out of Games — All Champions in TFT Enchanted Wilds (Set 18)", "url": "https://outof.games/realms/tft/guides/575-all-champions-in-teamfight-tactics-enchanted-wilds-set-18/", "used_for": "弈子名单与技能交叉验证", "credibility": "medium-high" },
+    { "name": "Total Apex Entertainment — TFT Set 18 Enchanted Wilds Info", "url": "https://totalapexentertainment.com/gaming/teamfight-tactics-set-18/", "used_for": "弈子名单交叉验证、上线日期", "credibility": "medium" },
+    { "name": "TFTactics.gg — Enchanted Wilds Set 18 Update", "url": "https://tftactics.gg/set-update/", "used_for": "S18 羁绊与赛季机制（Wisps / Avatar / Apex Predator 等）", "credibility": "medium-high", "note": "该站 /db/rolling 页面的池大小为未更新的旧值 22/20/17/10/9，不采用" },
+    { "name": "1v9.gg — TFT Patch Schedule 2026", "url": "https://1v9.gg/blog/teamfight-tactics-patch-schedule", "used_for": "当前补丁 18.1（2026-08-26 上线）/ 18.2（2026-09-10）、赛季时间线", "credibility": "medium-high" },
+    { "name": "新浪 — S18赛季自然之力有哪些新羁绊和弈子（2026-08-27 上线）", "url": "https://k.sina.com.cn/article_7880068207_1d5b04c6f06801q4k0.html", "used_for": "国服上线日期、并行保留 S17 / 恭喜发财模式、虚幻引擎", "credibility": "medium" },
+    { "name": "52PK — 云顶之弈S18赛季弈子大全", "url": "https://m.52pk.com/lol/jingyan/7612221.shtml", "used_for": "国服中文弈子名（5 费全对；1 费名单有误，慎采）", "credibility": "low-medium" },
+    { "name": "League of Legends Wiki — Neeko's Help / Champion Duplicator", "url": "https://leagueoflegends.fandom.com/wiki/Neeko%27s_Help_(Teamfight_Tactics)", "used_for": "复制器超额生成与不回池规则（V10.12）", "credibility": "medium", "note": "V10.12 后行为，S18 未二次确认" }
+  ]
+}

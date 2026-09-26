@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0",
+  "description": "1–5 费边框/费用条颜色参考（HSV 范围）。费用颜色先验把 65 类分类问题降到 ≤14 类，是准确率与性能的关键一招（ADR-02 第 3 步）。",
+  "CONFIRMED": false,
+  "note": "阈值需用真实截图样本校准；S18 为虚幻引擎赛季，颜色表现可能与旧赛季不同。",
+  "sampleRegion": {
+    "anchor": "bottom",
+    "heightRatio": 0.18,
+    "widthRatio": 0.9
+  },
+  "costs": [
+    {
+      "cost": 1,
+      "nameCn": "1 费 · 灰白",
+      "hsvRanges": [
+        { "hMin": 0, "hMax": 360, "sMin": 0, "sMax": 0.18, "vMin": 0.6, "vMax": 1 }
+      ],
+      "referenceRgb": { "r": 220, "g": 224, "b": 230 }
+    },
+    {
+      "cost": 2,
+      "nameCn": "2 费 · 绿",
+      "hsvRanges": [
+        { "hMin": 90, "hMax": 165, "sMin": 0.35, "sMax": 1, "vMin": 0.4, "vMax": 1 }
+      ],
+      "referenceRgb": { "r": 60, "g": 200, "b": 120 }
+    },
+    {
+      "cost": 3,
+      "nameCn": "3 费 · 蓝",
+      "hsvRanges": [
+        { "hMin": 190, "hMax": 250, "sMin": 0.35, "sMax": 1, "vMin": 0.4, "vMax": 1 }
+      ],
+      "referenceRgb": { "r": 70, "g": 140, "b": 240 }
+    },
+    {
+      "cost": 4,
+      "nameCn": "4 费 · 紫",
+      "hsvRanges": [
+        { "hMin": 260, "hMax": 310, "sMin": 0.3, "sMax": 1, "vMin": 0.4, "vMax": 1 }
+      ],
+      "referenceRgb": { "r": 175, "g": 95, "b": 240 }
+    },
+    {
+      "cost": 5,
+      "nameCn": "5 费 · 金",
+      "hsvRanges": [
+        { "hMin": 35, "hMax": 60, "sMin": 0.5, "sMax": 1, "vMin": 0.5, "vMax": 1 }
+      ],
+      "referenceRgb": { "r": 245, "g": 200, "b": 90 }
+    }
+  ],
+  "fallback": {
+    "strategy": "unknown-cost-scan-all",
+    "note": "无法归类费用时，不做先验剪枝，直接对全部模板做粗筛（耗时上升但不会误判）。"
+  }
+}

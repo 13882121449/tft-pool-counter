@@ -1,0 +1,23 @@
+node_modules/
+dist/
+release/
+coverage/
+*.log
+logs/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.tsbuildinfo
+.env
+.env.local
+
+# 用户素材与运行时数据（不入库）
+userData/
+build/icons/*.ico
+!build/icon.ico
+
+# 本地备份与归档（不入库）
+.archive/
+.nm_bak_20260914/

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "description": "默认棋盘几何与标定比例（1920×1080 基准，归一化到 0..1，分辨率无关）。A1 待真实截图校准，此处为默认可配置值，用户可通过标定向导覆盖。",
+  "baseResolution": {
+    "width": 1920,
+    "height": 1080,
+    "scaleFactor": 1
+  },
+  "board": {
+    "rows": 4,
+    "cols": 7,
+    "rect": {
+      "x": 0.285,
+      "y": 0.3,
+      "w": 0.43,
+      "h": 0.245
+    },
+    "cellSampleRatio": 0.72,
+    "normalizeTo": 64
+  },
+  "bench": {
+    "slots": 8,
+    "rect": {
+      "x": 0.3,
+      "y": 0.795,
+      "w": 0.4,
+      "h": 0.075
+    },
+    "cellSampleRatio": 0.78,
+    "normalizeTo": 64
+  },
+  "shop": {
+    "slots": 5,
+    "rect": {
+      "x": 0.34,
+      "y": 0.06,
+      "w": 0.32,
+      "h": 0.1
+    },
+    "cellSampleRatio": 0.8,
+    "normalizeTo": 64,
+    "wispSlotIndex": 4
+  },
+  "scoreboard": {
+    "rect": {
+      "x": 0.005,
+      "y": 0.18,
+      "w": 0.11,
+      "h": 0.4
+    }
+  },
+  "notes": [
+    "所有 rect 为归一化比例（相对屏幕物理宽高），不存绝对像素，规避分辨率/缩放失效问题。",
+    "S18 为首个虚幻引擎赛季，实际布局需由标定向导校准；本文件仅作为首次启动的默认值。",
+    "cellSampleRatio 表示取格子中心多大比例的区域用于裁剪识别，避开相邻格子与边框。",
+    "wispSlotIndex 为小精灵占据的商店格位，识别商店时必须排除。"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0",
+  "description": "星级识别参数。星标角标模板 + 亮度/面积统计；不确定时保守默认 1★ 并标低置信（低星 = 少算 = 高估剩余，误差方向更安全）。",
+  "conservativeDefaultStar": 1,
+  "minConfidence": 0.55,
+  "detectRegion": {
+    "anchor": "bottom-center",
+    "widthRatio": 0.6,
+    "heightRatio": 0.28
+  },
+  "starMarkers": [
+    {
+      "star": 1,
+      "templateFile": "star-1.png",
+      "markerCountHint": 1,
+      "hsvRanges": [
+        { "hMin": 0, "hMax": 360, "sMin": 0, "sMax": 0.25, "vMin": 0.6, "vMax": 1 }
+      ],
+      "brightPixelRatioRange": [0.0, 0.06]
+    },
+    {
+      "star": 2,
+      "templateFile": "star-2.png",
+      "markerCountHint": 2,
+      "hsvRanges": [
+        { "hMin": 40, "hMax": 70, "sMin": 0.35, "sMax": 1, "vMin": 0.6, "vMax": 1 },
+        { "hMin": 190, "hMax": 230, "sMin": 0.3, "sMax": 1, "vMin": 0.6, "vMax": 1 }
+      ],
+      "brightPixelRatioRange": [0.06, 0.14]
+    },
+    {
+      "star": 3,
+      "templateFile": "star-3.png",
+      "markerCountHint": 3,
+      "hsvRanges": [
+        { "hMin": 20, "hMax": 55, "sMin": 0.5, "sMax": 1, "vMin": 0.65, "vMax": 1 },
+        { "hMin": 280, "hMax": 320, "sMin": 0.4, "sMax": 1, "vMin": 0.6, "vMax": 1 }
+      ],
+      "brightPixelRatioRange": [0.14, 0.24]
+    },
+    {
+      "star": 4,
+      "templateFile": "star-4.png",
+      "markerCountHint": 4,
+      "hsvRanges": [
+        { "hMin": 0, "hMax": 20, "sMin": 0.5, "sMax": 1, "vMin": 0.7, "vMax": 1 },
+        { "hMin": 330, "hMax": 360, "sMin": 0.5, "sMax": 1, "vMin": 0.7, "vMax": 1 }
+      ],
+      "brightPixelRatioRange": [0.24, 1]
+    }
+  ],
+  "notes": [
+    "star=4 为 S18「日蚀 Solar」羁绊的战斗内临时升星，不额外消耗牌库，按 9 张计。",
+    "hsvRanges 与 brightPixelRatioRange 为初版经验阈值，需用真实样本校准。",
+    "任何一档都无法稳定命中时回退 conservativeDefaultStar 并降低置信度。"
+  ]
+}

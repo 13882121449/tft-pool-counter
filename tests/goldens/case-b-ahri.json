@@ -1,0 +1,160 @@
+{
+  "id": "case-b-ahri",
+  "title": "算例 B：立即止损（4 费阿狸 Ahri，Stage 4-2）",
+  "source": "docs/PRD.md §6.5 算例 B",
+  "championId": "ahri",
+  "baseTime": 1700000000000,
+  "note": "已巡查 6/8（第 6、7 家未巡查）：我 4 张 + 第2家 3 张 + 第5家 2 张 = 9 张；池 10 → 剩 1，悲观 0。",
+  "scans": [
+    {
+      "seat": 0,
+      "scanId": "case-b-s0",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 0,
+          "championId": "ahri",
+          "star": 2,
+          "confidence": 0.92,
+          "fingerprint": "aa11bb22cc33dd44",
+          "costGuess": 4,
+          "candidates": [{ "championId": "ahri", "score": 0.92 }],
+          "isBlacklisted": false
+        },
+        {
+          "zone": "board",
+          "slotIndex": 1,
+          "championId": "ahri",
+          "star": 1,
+          "confidence": 0.9,
+          "fingerprint": "aa11bb22cc33dd45",
+          "costGuess": 4,
+          "candidates": [{ "championId": "ahri", "score": 0.9 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 1,
+      "scanId": "case-b-s1",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 3,
+          "championId": "amumu",
+          "star": 1,
+          "confidence": 0.9,
+          "fingerprint": "bb11bb22cc33dd44",
+          "costGuess": 4,
+          "candidates": [{ "championId": "amumu", "score": 0.9 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 2,
+      "scanId": "case-b-s2",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 5,
+          "championId": "ahri",
+          "star": 2,
+          "confidence": 0.89,
+          "fingerprint": "cc11bb22cc33dd44",
+          "costGuess": 4,
+          "candidates": [{ "championId": "ahri", "score": 0.89 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 3,
+      "scanId": "case-b-s3",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 7,
+          "championId": "ezreal",
+          "star": 1,
+          "confidence": 0.9,
+          "fingerprint": "dd11bb22cc33dd44",
+          "costGuess": 4,
+          "candidates": [{ "championId": "ezreal", "score": 0.9 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 4,
+      "scanId": "case-b-s4",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 2,
+          "championId": "lillia",
+          "star": 1,
+          "confidence": 0.9,
+          "fingerprint": "ee11bb22cc33dd44",
+          "costGuess": 4,
+          "candidates": [{ "championId": "lillia", "score": 0.9 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 5,
+      "scanId": "case-b-s5",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 4,
+          "championId": "ahri",
+          "star": 1,
+          "confidence": 0.88,
+          "fingerprint": "ff11bb22cc33dd44",
+          "costGuess": 4,
+          "candidates": [{ "championId": "ahri", "score": 0.88 }],
+          "isBlacklisted": false
+        },
+        {
+          "zone": "board",
+          "slotIndex": 5,
+          "championId": "ahri",
+          "star": 1,
+          "confidence": 0.87,
+          "fingerprint": "ff11bb22cc33dd45",
+          "costGuess": 4,
+          "candidates": [{ "championId": "ahri", "score": 0.87 }],
+          "isBlacklisted": false
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "championId": "ahri",
+    "poolTotal": 10,
+    "observedCopies": 9,
+    "remaining": 1,
+    "overflow": 0,
+    "remainingOptimistic": 1,
+    "remainingPessimistic": 0,
+    "bySeat": [4, 0, 3, 0, 0, 2, 0, 0],
+    "coverage": { "scanned": 6, "total": 8 },
+    "flagsWith": [],
+    "flagsWithout": ["OVERFLOW_DUPLICATOR", "LOW_COVERAGE"]
+  },
+  "rollback": {
+    "description": "第 2 家卖掉 2★ 阿狸：下次扫描该槽为空且超过 TTL → 该家归零，剩余从 1 回升到 4（UI 显示 ↑3）",
+    "seat": 2,
+    "scanId": "case-b-s2-rollback",
+    "emptySlotIndex": 5,
+    "emptyZone": "board",
+    "advanceMs": 9000,
+    "expect": {
+      "observedCopies": 6,
+      "remaining": 4,
+      "bySeat": [4, 0, 0, 0, 0, 2, 0, 0]
+    }
+  }
+}

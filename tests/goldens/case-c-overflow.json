@@ -1,0 +1,50 @@
+{
+  "id": "case-c-overflow",
+  "title": "算例 C：复制器超额（边界）",
+  "source": "docs/PRD.md §6.5 算例 C",
+  "championId": "ashe",
+  "baseTime": 1700000000000,
+  "note": "5 费池 = 9，全场已观测 9 张，玩家用英雄复制器又拿到 1 张 → 已观测 10 > 9；显示 +1 复制器、剩余 0，绝不显示负数。",
+  "scans": [
+    {
+      "seat": 0,
+      "scanId": "case-c-s0",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 0,
+          "championId": "ashe",
+          "star": 3,
+          "confidence": 0.95,
+          "fingerprint": "cc00112233445566",
+          "costGuess": 5,
+          "candidates": [{ "championId": "ashe", "score": 0.95 }],
+          "isBlacklisted": false
+        },
+        {
+          "zone": "board",
+          "slotIndex": 1,
+          "championId": "ashe",
+          "star": 1,
+          "confidence": 0.9,
+          "fingerprint": "cc00112233445567",
+          "costGuess": 5,
+          "candidates": [{ "championId": "ashe", "score": 0.9 }],
+          "isBlacklisted": false
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "championId": "ashe",
+    "poolTotal": 9,
+    "observedCopies": 10,
+    "remaining": 0,
+    "overflow": 1,
+    "remainingOptimistic": 0,
+    "remainingPessimistic": 0,
+    "bySeat": [10, 0, 0, 0, 0, 0, 0, 0],
+    "coverage": { "scanned": 1, "total": 8 },
+    "flagsWith": ["OVERFLOW_DUPLICATOR"]
+  }
+}

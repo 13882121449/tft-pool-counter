@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1.0",
+  "description": "非池单位黑名单（E5）。这些单位/生成物不从牌库中取牌，识别阶段与引擎层都必须过滤，否则会系统性高估消耗。",
+  "CONFIRMED": false,
+  "confidence": "medium",
+  "note": "黑白名单以 id 匹配为主；无法匹配到任何模板且置信度低于阈值的格子同样丢弃。来源：docs/ARCHITECTURE.md §ADR-02 第 7 步 + data/pool-baseline.json 的 non_pool_units_blacklist。",
+  "units": [
+    {
+      "id": "summon-yorick-spirit-walker",
+      "nameCn": "约里克·灵魂行者（召唤物）",
+      "nameEn": "Yorick Spirit Walker",
+      "kind": "summon",
+      "sourceChampionId": "yorick",
+      "visualHint": "半透明蓝白色幽灵，站位在棋盘边缘"
+    },
+    {
+      "id": "summon-azir-soldier",
+      "nameCn": "阿兹尔·沙兵（召唤物）",
+      "nameEn": "Azir Soldier",
+      "kind": "summon",
+      "sourceChampionId": "azir",
+      "visualHint": "金色沙兵，无费用边框"
+    },
+    {
+      "id": "summon-zyra-plant",
+      "nameCn": "婕拉·植物（召唤物）",
+      "nameEn": "Zyra Plant",
+      "kind": "summon",
+      "sourceChampionId": "zyra",
+      "visualHint": "绿色藤蔓植物，战斗中临时出现"
+    },
+    {
+      "id": "summon-mamabeak-spawn",
+      "nameCn": "锋喙鸟·幼鸟（召唤物）",
+      "nameEn": "Mama Beak Spawn",
+      "kind": "summon",
+      "sourceChampionId": "mamabeak",
+      "visualHint": "小型鸟类单位，跟随锋喙鸟出现"
+    },
+    {
+      "id": "terrain-elderwood-plant",
+      "nameCn": "永恒之森·植物（石皮树/生命之花/深林守卫）",
+      "nameEn": "Elderwood Plant",
+      "kind": "terrain",
+      "visualHint": "地形格上的木本单位，无星级角标"
+    },
+    {
+      "id": "terrain-ivern-seed",
+      "nameCn": "艾翁·翠神种子地形单位",
+      "nameEn": "Ivern Seed Unit",
+      "kind": "terrain",
+      "sourceChampionId": "ivern",
+      "visualHint": "由种子增益地形格生成的单位"
+    },
+    {
+      "id": "event-blossom-sprite",
+      "nameCn": "灵魂莲华·小精灵生成物",
+      "nameEn": "Blossom Sprite Spawn",
+      "kind": "event",
+      "visualHint": "粉色光效小精灵"
+    },
+    {
+      "id": "event-wisp",
+      "nameCn": "小精灵 Wisps（S18 赛季机制）",
+      "nameEn": "Wisp",
+      "kind": "shop-item",
+      "visualHint": "占据商店最右格位，是商品不是弈子"
+    },
+    {
+      "id": "event-solar-lunar-temp",
+      "nameCn": "日蚀/月蚀临时单位",
+      "nameEn": "Solar/Lunar Temporary Unit",
+      "kind": "event",
+      "visualHint": "战斗内特效产生的临时单位"
+    },
+    {
+      "id": "mirror-leblanc",
+      "nameCn": "乐芙兰·镜像分身",
+      "nameEn": "LeBlanc Mirror",
+      "kind": "mirror",
+      "sourceChampionId": "leblanc",
+      "visualHint": "半透明紫色分身，战斗中临时出现"
+    }
+  ]
+}

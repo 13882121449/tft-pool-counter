@@ -1,0 +1,47 @@
+appId: com.tftpoolcounter.app
+productName: TFT 牌库剩余计数器
+copyright: Copyright © 2026
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/**/*
+  - data/**/*
+  - package.json
+
+# native 模块（node-screenshots / sharp，T03 引入）必须解包出 asar
+asar: true
+asarUnpack:
+  - '**/*.node'
+  - '**/node_modules/sharp/**/*'
+  - '**/node_modules/node-screenshots/**/*'
+
+win:
+  target:
+    - nsis
+  icon: build/icon.ico
+  artifactName: '${productName}-${version}-Setup.${ext}'
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  # 合规：绝不请求管理员权限
+  installerLanguages:
+    - zh_CN
+  language: '2052'
+
+mac:
+  target: dmg
+  category: public.app-category.utilities
+
+linux:
+  target: AppImage
+  category: Utility
+
+publish: null

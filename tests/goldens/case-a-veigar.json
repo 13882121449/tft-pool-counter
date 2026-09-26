@@ -1,0 +1,191 @@
+{
+  "id": "case-a-veigar",
+  "title": "算例 A：继续追（1 费维迦 Veigar，Stage 3-2）",
+  "source": "docs/PRD.md §6.5 算例 A",
+  "championId": "veigar",
+  "baseTime": 1700000000000,
+  "note": "已巡查 8/8：我 5 张 + 第1家 1 张 + 第2家 3 张 + 第3家 2 张 = 11 张；池 30 → 剩 19。",
+  "scans": [
+    {
+      "seat": 0,
+      "scanId": "case-a-s0",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 0,
+          "championId": "veigar",
+          "star": 2,
+          "confidence": 0.93,
+          "fingerprint": "a1b2c3d4e5f60718",
+          "costGuess": 1,
+          "candidates": [{ "championId": "veigar", "score": 0.93 }],
+          "isBlacklisted": false
+        },
+        {
+          "zone": "bench",
+          "slotIndex": 0,
+          "championId": "veigar",
+          "star": 1,
+          "confidence": 0.9,
+          "fingerprint": "a1b2c3d4e5f60719",
+          "costGuess": 1,
+          "candidates": [{ "championId": "veigar", "score": 0.9 }],
+          "isBlacklisted": false
+        },
+        {
+          "zone": "bench",
+          "slotIndex": 1,
+          "championId": "veigar",
+          "star": 1,
+          "confidence": 0.88,
+          "fingerprint": "a1b2c3d4e5f6071a",
+          "costGuess": 1,
+          "candidates": [{ "championId": "veigar", "score": 0.88 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 1,
+      "scanId": "case-a-s1",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 3,
+          "championId": "veigar",
+          "star": 1,
+          "confidence": 0.85,
+          "fingerprint": "b1b2c3d4e5f60718",
+          "costGuess": 1,
+          "candidates": [{ "championId": "veigar", "score": 0.85 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 2,
+      "scanId": "case-a-s2",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 5,
+          "championId": "veigar",
+          "star": 2,
+          "confidence": 0.91,
+          "fingerprint": "c1b2c3d4e5f60718",
+          "costGuess": 1,
+          "candidates": [{ "championId": "veigar", "score": 0.91 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 3,
+      "scanId": "case-a-s3",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 7,
+          "championId": "veigar",
+          "star": 1,
+          "confidence": 0.87,
+          "fingerprint": "d1b2c3d4e5f60718",
+          "costGuess": 1,
+          "candidates": [{ "championId": "veigar", "score": 0.87 }],
+          "isBlacklisted": false
+        },
+        {
+          "zone": "board",
+          "slotIndex": 8,
+          "championId": "veigar",
+          "star": 1,
+          "confidence": 0.86,
+          "fingerprint": "d1b2c3d4e5f60719",
+          "costGuess": 1,
+          "candidates": [{ "championId": "veigar", "score": 0.86 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 4,
+      "scanId": "case-a-s4",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 2,
+          "championId": "akali",
+          "star": 1,
+          "confidence": 0.9,
+          "fingerprint": "e1b2c3d4e5f60718",
+          "costGuess": 1,
+          "candidates": [{ "championId": "akali", "score": 0.9 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 5,
+      "scanId": "case-a-s5",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 4,
+          "championId": "karma",
+          "star": 1,
+          "confidence": 0.9,
+          "fingerprint": "f1b2c3d4e5f60718",
+          "costGuess": 1,
+          "candidates": [{ "championId": "karma", "score": 0.9 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 6,
+      "scanId": "case-a-s6",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 6,
+          "championId": "leona",
+          "star": 1,
+          "confidence": 0.9,
+          "fingerprint": "0ab2c3d4e5f60718",
+          "costGuess": 1,
+          "candidates": [{ "championId": "leona", "score": 0.9 }],
+          "isBlacklisted": false
+        }
+      ]
+    },
+    {
+      "seat": 7,
+      "scanId": "case-a-s7",
+      "observations": [
+        {
+          "zone": "board",
+          "slotIndex": 9,
+          "championId": "ornn",
+          "star": 1,
+          "confidence": 0.9,
+          "fingerprint": "1ab2c3d4e5f60718",
+          "costGuess": 1,
+          "candidates": [{ "championId": "ornn", "score": 0.9 }],
+          "isBlacklisted": false
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "championId": "veigar",
+    "poolTotal": 30,
+    "observedCopies": 11,
+    "remaining": 19,
+    "overflow": 0,
+    "remainingOptimistic": 19,
+    "remainingPessimistic": 19,
+    "bySeat": [5, 1, 3, 2, 0, 0, 0, 0],
+    "coverage": { "scanned": 8, "total": 8 },
+    "flagsWithout": ["OVERFLOW_DUPLICATOR", "LOW_COVERAGE"]
+  }
+}
